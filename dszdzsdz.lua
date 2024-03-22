@@ -3,7 +3,7 @@ getgenv().esp = {
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
     CharacterOffset = CFrame.new(0, -0.25, 0),
-    UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
+    UseBoundingBox = false, -- will use bounding box instead of size preset for dynamic box
 
     PriorityColor = Color3.new(1,0.25,0.25),
 
@@ -31,14 +31,14 @@ getgenv().esp = {
         ['nametag']  = { enabled = true, position = 'top', order = 1 },
         ['name']     = { enabled = true, position = 'top', order = 2 },
         ['health']   = { enabled = true, position = 'left', order = 1, bar = 'health' },
-        ['armor']    = { enabled = true, position = 'bottom', order = 2, bar = 'armor' },
+        ['armor']    = { enabled = true, position = 'left', order = 2, bar = 'armor' },
         ['tool']     = { enabled = true, position = 'bottom', suffix = '', prefix = '', order = 1 },
         ['distance'] = { enabled = false, position = 'bottom', suffix = 'm', order = 2 },
     },
 
     BarLayout = {
         ['health'] = { enabled = true, position = 'left', order = 1, color_empty = Color3.fromRGB(176, 84, 84), color_full = Color3.fromRGB(140, 250, 140) },
-        ['armor']  = { enabled = game.PlaceId == 2788229376 and true or false, position = 'bottom', order = 2, color_empty = Color3.fromRGB(58, 58, 97), color_full = Color3.fromRGB(72, 72, 250) }
+        ['armor']  = { enabled = true, position = 'left', order = 2, color_empty = Color3.fromRGB(58, 58, 97), color_full = Color3.fromRGB(72, 72, 250) }
     }
     
 }
@@ -312,7 +312,7 @@ function player:GetTextData(data)
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
         ['name']     = { text = self.instance.DisplayName },
-        ['armor']    = { text = tostring(math.floor(game.PlaceId == 2788229376 and data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
+        ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
@@ -483,15 +483,3 @@ end)
 
 -- // return
 return esp
---
-local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/hotman521/dsadasdsa/main/dszdzsdz.lua"))()
-
-for i, v in pairs(game.Players:GetPlayers()) do
-    ESP.NewPlayer(v)
-end
-
-game:GetService("UserInputService").InputBegan:Connect(function(Key)
-    if Key.KeyCode == Enum.KeyCode.Q then
-        ESP.BoxEnabled = not ESP.BoxEnabled
-    end
-end)
