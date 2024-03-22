@@ -25,9 +25,9 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-    TextSurround = "$$",
+    TextSurround = "None",
     TextCase = "Normal",
-    TextLength = "5",
+    TextLength = "36",
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -315,7 +315,7 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
-    local Text
+    local Text = self.instance.DisplayName
     --
     local Length = esp.TextLength
     if Length ~= 36 then
