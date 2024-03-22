@@ -1,4 +1,5 @@
 getgenv().esp = {
+    Enabled = true,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
@@ -404,6 +405,7 @@ end
 
 -- // new player
 function esp.NewPlayer(player_instance)
+    if esp.Enabled then
     local player = setmetatable({}, player)
 
     player.instance = player_instance
@@ -470,6 +472,7 @@ function esp.NewPlayer(player_instance)
     
     table.insert(players, player)
     return player
+    end
 end
 
 -- // update
