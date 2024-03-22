@@ -95,42 +95,6 @@ getgenv().players = {}
 local player = {}
 player.__index = player
 
-function player:Check()
-    
-    local character = self.instance.Character
-    local rootpart = character and character:FindFirstChild('HumanoidRootPart')
-    local torso = character and character:FindFirstChild('UpperTorso')
-    local humanoid = rootpart and character:FindFirstChild('Humanoid')
-    local bodyeffects = character and character:FindFirstChild('BodyEffects')
-    local armor = bodyeffects and bodyeffects:FindFirstChild('Armor')
-
-    if not humanoid or 0 >= humanoid.Health then
-        return false
-    end
-
-    local screen_position, screen_visible = cframe_to_viewport(torso.CFrame * esp.CharacterOffset, true)
-
-    if not screen_visible then
-        return false
-    end
-
-    return true, {
-        character = character,
-        rootpart = rootpart,
-        humanoid = humanoid,
-        bodyeffects = bodyeffects,
-        armor = armor,
-        position = screen_position,
-        cframe = rootpart.CFrame * esp.CharacterOffset,
-        health = humanoid.Health,
-        maxhealth = humanoid.MaxHealth,
-        healthfactor = humanoid.Health / humanoid.MaxHealth,
-        armorfactor = armor.Value / 200,
-        distance = (rootpart.CFrame.p - camera.CFrame.p).magnitude
-    }
-    
-end
-
 function player:Step(delta)
 
     local check_pass, check_data = self:Check()
@@ -189,16 +153,15 @@ function player:Step(delta)
         local outline = box_drawings[1]
         local inline = box_drawings[9]
 
-        inline.Filled = false
-        outline.Filled = false
-
         outline.Visible = true
         outline.Size = size
+        outline.Filled = false
         outline.Position = position
 
         inline.Visible = true
         inline.Size = size
         inline.Position = position
+        inline.Filled = false
         inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
     end
     
@@ -226,6 +189,9 @@ function player:Step(delta)
 
         local progress = data.progress or 0
         local vertical = layout.position == 'left' or layout.position == 'right'
+
+        outline.Visible = true
+        inline.Visible = true
 
         outline.Size = vertical and Vector2.new(3, size.Y + 2) or Vector2.new(size.X + 2, 3)
         outline.Position = position + (
