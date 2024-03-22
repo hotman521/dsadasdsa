@@ -315,9 +315,24 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
+    local Text
+    --
+    local Length = esp.TextLength
+    if Length ~= 36 then
+        Text = Text:sub(0, Length)
+    end
+    --
+    if esp.TextCase ~= "Normal" then
+        Text = esp.TextCase == "Uppercase" and Text:upper() or Text:lower()
+    end
+    --
+    if esp.TextSurround ~= "None" then
+        Text = esp.TextSurround:sub(0, 1) .. Text .. esp.TextSurround:sub(2)
+    end
+    --
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
-        ['name']     = { text = self.instance.DisplayName },
+        ['name']     = { text = Text },
         ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
@@ -381,21 +396,6 @@ function player:SetHighlightColor(color, color2)
 end
 
 function player:SetNametagText(str)
-    local Text = str
-    if not Length.Disabled then
-        local Length = esp.TextLength
-        --
-        Text = Text:sub(0, Length)
-    end
-    --
-    if esp.TextCase ~= "Normal" then
-        Text = esp.TextCase == "Uppercase" and Text:upper() or Text:lower()
-    end
-    --
-    if esp.TextSurround ~= "None" then
-        Text = esp.TextSurround:sub(0, 1) .. Text .. esp.TextSurround:sub(2)
-    end
-    --
     self.nametag_text = Text
 end
 
