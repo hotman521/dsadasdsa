@@ -1,5 +1,4 @@
 getgenv().esp = {
-    Enabled = true,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
@@ -24,6 +23,7 @@ getgenv().esp = {
     ChamsOuterColor = Color3.fromRGB(0, 0, 0),
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
+
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -132,7 +132,7 @@ function player:Step(delta)
 
     self:SetVisible(false)
 
-    if not check_pass or esp.Enabled == false then
+    if not check_pass then
         return
     else
         self.visible = true
@@ -187,10 +187,8 @@ function player:Step(delta)
         outline.Visible = true
         outline.Size = size
         outline.Position = position
-        outline.Filled = false
 
         inline.Visible = true
-        inline.Filled = false
         inline.Size = size
         inline.Position = position
         inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
@@ -316,7 +314,7 @@ function player:GetTextData(data)
         ['name']     = { text = self.instance.DisplayName },
         ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
-        ['distance'] = { text = tostring(data.distance)) },
+        ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
     }
 end
@@ -401,8 +399,6 @@ function player:SetVisible(bool)
         for i,v in next, self.drawings.skeleton do v.Visible = bool end
         for i,v in next, self.drawings.text do v[3].Visible = bool end
         for i,v in next, self.drawings.bar do v[3].Visible = bool; v[4].Visible = bool end
-
-        self.highlight.Enabled = bool
     end
 end
 
