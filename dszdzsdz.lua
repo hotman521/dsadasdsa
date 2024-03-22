@@ -25,6 +25,11 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
+    TextLength = 36,
+    TextCase = "Normal",
+    TextSurround = "None",
+    DisplayName = true,
+    ConversionMethod = "Studs",
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
