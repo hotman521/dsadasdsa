@@ -81,7 +81,7 @@ do -- Conversions
         end,
         Measurement = "st",
         Round = function(Number)
-            return Round(Number)
+            return math.round(Number)
         end
     }
     --
@@ -91,7 +91,7 @@ do -- Conversions
         end,
         Measurement = "m",
         Round = function(Number)
-            return Round(Number * 10) / 10
+            return math.round(Number * 10) / 10
         end
     }
     --
@@ -101,7 +101,7 @@ do -- Conversions
         end,
         Measurement = "cm",
         Round = function(Number)
-            return Round(Number)
+            return math.round(Number)
         end
     }
     --
@@ -109,9 +109,9 @@ do -- Conversions
         Conversion = function(Studs)
             return Studs * 11.0236224
         end,
-        Measurement = [['']],
+        Measurement = "in",
         Round = function(Number)
-            return Round(Number)
+            return math.round(Number)
         end
     }
     --
@@ -121,7 +121,7 @@ do -- Conversions
         end,
         Measurement = "mi",
         Round = function(Number)
-            return Round(Number * 10000) / 10000
+            return math.round(Number * 10000) / 10000
         end
     }
     --
@@ -131,7 +131,7 @@ do -- Conversions
         end,
         Measurement = "yd",
         Round = function(Number)
-            return Round(Number * 10) / 10
+            return math.round(Number * 10) / 10
         end
     }
     --
@@ -141,7 +141,7 @@ do -- Conversions
         end,
         Measurement = "ft",
         Round = function(Number)
-            return Round(Number)
+            return math.round(Number)
         end
     }
 end
