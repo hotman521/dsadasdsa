@@ -7,7 +7,7 @@ getgenv().crosshair = {
     width = 1.5,
     length = 10,
     radius = 11,
-    color = Color3.fromRGB(20, 18, 189),
+    color = Color3.fromRGB(0, 255, 0),
 
     spin = true, -- animate the rotation
     spin_speed = 150,
@@ -39,8 +39,8 @@ local last_render = 0
 local drawings = {
     crosshair = {},
     text = {
-        Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = 'nigger', Color = Color3.new(1,1,1)}),
-        Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = ".nigger"}),
+        Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = 'Lucky', Color = Color3.new(1,1,1)}),
+        Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = "Hub"}),
     }
 }
 
