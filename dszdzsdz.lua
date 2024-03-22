@@ -25,6 +25,11 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
+    TextLength = 36,
+    TextCase = "Normal",
+    TextSurround = "None",
+    DisplayName = true,
+
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
     TextLayout = {
@@ -309,7 +314,7 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
-    local Text
+    local Text = self.instance.DisplayName
     --
     if esp.DisplayName then
         Text = ((self.instance.DisplayName ~= nil and self.instance.DisplayName ~= "" and self.instance.DisplayName ~= " ") and self.instance.DisplayName or self.instance.Name)
