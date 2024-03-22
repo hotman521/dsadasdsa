@@ -1,5 +1,5 @@
 getgenv().crosshair = {
-    enabled = true,
+    enabled = false,
     refreshrate = 0,
     mode = 'mouse', -- center, mouse, custom
     position = Vector2.new(0,0), -- custom position
