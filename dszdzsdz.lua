@@ -405,7 +405,6 @@ end
 
 -- // new player
 function esp.NewPlayer(player_instance)
-    if esp.Enabled then
     local player = setmetatable({}, player)
 
     player.instance = player_instance
@@ -431,6 +430,10 @@ function esp.NewPlayer(player_instance)
         for i,v in next, player.drawings.bar do v[3]:Remove(); v[4]:Remove() end
 
         player.highlight:Destroy()
+    end
+
+    if esp.Enabled == false then
+        player.remove_esp()
     end
 
     for i = 1, 8 do
@@ -472,7 +475,6 @@ function esp.NewPlayer(player_instance)
     
     table.insert(players, player)
     return player
-    end
 end
 
 -- // update
