@@ -411,8 +411,12 @@ end
 function esp.NewPlayer(player_instance, type)
     local player = setmetatable({}, player)
 
+    if type == "Priority" then
+        player:SetPriority(true)
+    end
+
     player.instance = player_instance
-    player.priority = type == "Priority" and true or false
+    player.priority = false
     player.useboxcolor = false
     player.nametag_enabled = false
     player.nametag_text = 'nametag'
