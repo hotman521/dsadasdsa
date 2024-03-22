@@ -312,7 +312,7 @@ function player:GetTextData(data)
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
         ['name']     = { text = self.instance.DisplayName },
-        ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
+        ['armor']    = { text = tostring(math.floor(game.PlaceId == 2788229376 and data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
