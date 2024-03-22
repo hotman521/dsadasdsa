@@ -6,7 +6,7 @@ getgenv().esp = {
     CharacterOffset = CFrame.new(0, -0.25, 0),
     UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
 
-    PriorityColor = Color3.new(1,0.25,0.25),
+    PriorityColor = Color3.fromRGB(255, 0, 0),
 
     BoxEnabled = true,
     BoxCorners = true,
@@ -408,11 +408,11 @@ function player:SetVisible(bool)
 end
 
 -- // new player
-function esp.NewPlayer(player_instance)
+function esp.NewPlayer(player_instance, type)
     local player = setmetatable({}, player)
 
     player.instance = player_instance
-    player.priority = false
+    player.priority = type == "Priority" and true or false
     player.useboxcolor = false
     player.nametag_enabled = false
     player.nametag_text = 'nametag'
