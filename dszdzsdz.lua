@@ -316,13 +316,7 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
-    local Text
-    --
-    if esp.DisplayName then
-        Text = ((self.instance.DisplayName ~= nil and self.instance.DisplayName ~= "" and self.instance.DisplayName ~= " ") and self.instance.DisplayName or self.instance.Name)
-    else
-        Text = self.instance.Name
-    end
+    local Text = esp.DisplayName and self.instance.DisplayName or self.instance.Name
     --
     local Length = esp.TextLength
     if Length ~= 36 then
