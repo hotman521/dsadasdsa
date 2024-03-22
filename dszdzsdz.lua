@@ -1,6 +1,6 @@
 getgenv().esp = {
     Enabled = true,
-
+    
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
     CharacterOffset = CFrame.new(0, -0.25, 0),
@@ -110,10 +110,6 @@ function player:Check()
         return false
     end
 
-    if esp.Enabled == false then
-        return false
-    end
-
     return true, {
         character = character,
         rootpart = rootpart,
@@ -137,7 +133,7 @@ function player:Step(delta)
 
     self:SetVisible(false)
 
-    if not check_pass then
+    if not check_pass or esp.Enabled == false then
         return
     else
         self.visible = true
