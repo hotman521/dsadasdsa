@@ -29,7 +29,6 @@ getgenv().esp = {
     TextCase = "Normal",
     TextSurround = "None",
     DisplayName = true,
-    ConversionMethod = "Studs",
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
