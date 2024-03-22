@@ -189,14 +189,15 @@ function player:Step(delta)
         local outline = box_drawings[1]
         local inline = box_drawings[9]
 
+        inline.Filled = false
+        outline.Filled = false
+
         outline.Visible = true
         outline.Size = size
         outline.Position = position
-        outline.Filled = false
 
         inline.Visible = true
         inline.Size = size
-        inline.Filled = false
         inline.Position = position
         inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
     end
