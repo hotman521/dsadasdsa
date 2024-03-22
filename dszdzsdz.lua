@@ -317,9 +317,6 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
-    local Conversion = esp.ConversionMethod
-    local Magnitude = data.distance
-    local Distance, Measurement, Rounded = Conversion(Magnitude, Conversion)
     local Text = self.instance.DisplayName
     --
     if esp.DisplayName then
@@ -346,7 +343,7 @@ function player:GetTextData(data)
         ['name']     = { text = Text },
         ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
-        ['distance'] = { text = data.distance) },
+        ['distance'] = { text = tostring(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
     }
 end
