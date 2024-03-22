@@ -317,7 +317,7 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
-    local Text = self.instance.DisplayName
+    local Text
     --
     if esp.DisplayName then
         Text = ((self.instance.DisplayName ~= nil and self.instance.DisplayName ~= "" and self.instance.DisplayName ~= " ") and self.instance.DisplayName or self.instance.Name)
