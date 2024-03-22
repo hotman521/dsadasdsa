@@ -1,6 +1,5 @@
 getgenv().esp = {
-    Enabled = true,
-    
+
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
     CharacterOffset = CFrame.new(0, -0.25, 0),
@@ -24,6 +23,7 @@ getgenv().esp = {
     ChamsOuterColor = Color3.fromRGB(0, 0, 0),
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
+
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -132,7 +132,7 @@ function player:Step(delta)
 
     self:SetVisible(false)
 
-    if not check_pass or esp.Enabled == false then
+    if not check_pass then
         return
     else
         self.visible = true
@@ -399,8 +399,6 @@ function player:SetVisible(bool)
         for i,v in next, self.drawings.skeleton do v.Visible = bool end
         for i,v in next, self.drawings.text do v[3].Visible = bool end
         for i,v in next, self.drawings.bar do v[3].Visible = bool; v[4].Visible = bool end
-
-        self.highlight.Enabled = bool
     end
 end
 
