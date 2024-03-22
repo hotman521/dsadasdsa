@@ -25,9 +25,9 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-    TextSurround = "None",
+    TextSurround = "$$",
     TextCase = "Normal",
-    TextLength = "36",
+    TextLength = "5",
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
