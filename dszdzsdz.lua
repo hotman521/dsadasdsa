@@ -28,6 +28,8 @@ getgenv().esp = {
     TextSurround = "None",
     TextCase = "Normal",
     TextLength = "36",
+    DisplayName = true,
+    ConversionMethod = "Studs",
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -70,6 +72,88 @@ local skeleton_connections = {
 
 function vector2_floor(vector2)
     return Vector2.new(math.floor(vector2.X), math.floor(vector2.Y))
+end
+
+do -- Conversions
+    Math.Conversions["Studs"] = {
+        Conversion = function(Studs)
+            return Studs
+        end,
+        Measurement = "st",
+        Round = function(Number)
+            return Round(Number)
+        end
+    }
+    --
+    Math.Conversions["Meters"] = {
+        Conversion = function(Studs)
+            return Studs * 0.28
+        end,
+        Measurement = "m",
+        Round = function(Number)
+            return Round(Number * 10) / 10
+        end
+    }
+    --
+    Math.Conversions["Centimeters"] = {
+        Conversion = function(Studs)
+            return Studs * 28
+        end,
+        Measurement = "cm",
+        Round = function(Number)
+            return Round(Number)
+        end
+    }
+    --
+    Math.Conversions["Inches"] = {
+        Conversion = function(Studs)
+            return Studs * 11.0236224
+        end,
+        Measurement = [['']],
+        Round = function(Number)
+            return Round(Number)
+        end
+    }
+    --
+    Math.Conversions["Miles"] = {
+        Conversion = function(Studs)
+            return Studs * 0.000173983936
+        end,
+        Measurement = "mi",
+        Round = function(Number)
+            return Round(Number * 10000) / 10000
+        end
+    }
+    --
+    Math.Conversions["Yards"] = {
+        Conversion = function(Studs)
+            return Studs * 0.30621164
+        end,
+        Measurement = "yd",
+        Round = function(Number)
+            return Round(Number * 10) / 10
+        end
+    }
+    --
+    Math.Conversions["Feet"] = {
+        Conversion = function(Studs)
+            return Studs * 0.9186352
+        end,
+        Measurement = "ft",
+        Round = function(Number)
+            return Round(Number)
+        end
+    }
+end
+
+function Conversion(Studs, Conversion)
+    local Conversion = Math.Conversions[Conversion]
+    --
+    local Converted = Conversion.Conversion(Studs)
+    local Measurement = Conversion.Measurement
+    local Rounded = Conversion.Round(Converted)
+    --
+    return Converted, Measurement, Rounded
 end
 
 function cframe_to_viewport(cframe, floor)
@@ -315,7 +399,16 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
+    local Conversion = esp.ConversionMethod
+    local Magnitude = data.distance
+    local Distance, Measurement, Rounded = Conversion(Magnitude, Conversion)
     local Text = self.instance.DisplayName
+    --
+    if esp.DisplayName then
+        Text = ((self.instance.DisplayName ~= nil and self.instance.DisplayName ~= "" and self.instance.DisplayName ~= " ") and self.instance.DisplayName or self.instance.Name)
+    else
+        Text = self.instance.Name
+    end
     --
     local Length = esp.TextLength
     if Length ~= 36 then
@@ -335,7 +428,7 @@ function player:GetTextData(data)
         ['name']     = { text = Text },
         ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
-        ['distance'] = { text = tostring(math.floor(data.distance)) },
+        ['distance'] = { text = ("%s%s"):format(Rounded, Measurement)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
     }
 end
