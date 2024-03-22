@@ -316,8 +316,8 @@ end
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
     local Text = self.instance.DisplayName
-    --
     local Length = esp.TextLength
+    --
     if Length ~= 36 then
         Text = Text:sub(0, Length)
     end
