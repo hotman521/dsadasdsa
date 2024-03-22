@@ -110,6 +110,10 @@ function player:Check()
         return false
     end
 
+    if esp.Enabled == false then
+        return false
+    end
+
     return true, {
         character = character,
         rootpart = rootpart,
@@ -430,10 +434,6 @@ function esp.NewPlayer(player_instance)
         for i,v in next, player.drawings.bar do v[3]:Remove(); v[4]:Remove() end
 
         player.highlight:Destroy()
-    end
-
-    if esp.Enabled == false then
-        player.remove_esp()
     end
 
     for i = 1, 8 do
