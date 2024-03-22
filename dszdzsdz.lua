@@ -227,9 +227,6 @@ function player:Step(delta)
         local progress = data.progress or 0
         local vertical = layout.position == 'left' or layout.position == 'right'
 
-        outline.Visible = true
-        inline.Visible = true
-
         outline.Size = vertical and Vector2.new(3, size.Y + 2) or Vector2.new(size.X + 2, 3)
         outline.Position = position + (
             layout.position == 'top' and Vector2.new(-1, -(5 + bar_positions.top)) or
