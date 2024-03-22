@@ -1,4 +1,5 @@
 getgenv().esp = {
+    Enabled = true,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
@@ -132,7 +133,7 @@ function player:Step(delta)
 
     self:SetVisible(false)
 
-    if not check_pass then
+    if not check_pass or esp.Enabled == false then
         return
     else
         self.visible = true
@@ -187,8 +188,10 @@ function player:Step(delta)
         outline.Visible = true
         outline.Size = size
         outline.Position = position
+        outline.Filled = false
 
         inline.Visible = true
+        inline.Filled = false
         inline.Size = size
         inline.Position = position
         inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
@@ -399,6 +402,8 @@ function player:SetVisible(bool)
         for i,v in next, self.drawings.skeleton do v.Visible = bool end
         for i,v in next, self.drawings.text do v[3].Visible = bool end
         for i,v in next, self.drawings.bar do v[3].Visible = bool; v[4].Visible = bool end
+
+        self.highlight.Enabled = bool
     end
 end
 
