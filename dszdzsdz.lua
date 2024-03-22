@@ -25,8 +25,6 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-    DisplayName = true,
-
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
     TextLayout = {
