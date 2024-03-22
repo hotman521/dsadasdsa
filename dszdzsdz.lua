@@ -38,7 +38,7 @@ getgenv().esp = {
 
     BarLayout = {
         ['health'] = { enabled = true, position = 'left', order = 1, color_empty = Color3.fromRGB(176, 84, 84), color_full = Color3.fromRGB(140, 250, 140) },
-        ['armor']  = { enabled = true, position = 'bottom', order = 2, color_empty = Color3.fromRGB(58, 58, 97), color_full = Color3.fromRGB(72, 72, 250) }
+        ['armor']  = { enabled = game.PlaceId == 2788229376 and true or false, position = 'bottom', order = 2, color_empty = Color3.fromRGB(58, 58, 97), color_full = Color3.fromRGB(72, 72, 250) }
     }
     
 }
@@ -97,7 +97,7 @@ function player:Check()
     local torso = character and character:FindFirstChild('UpperTorso')
     local humanoid = rootpart and character:FindFirstChild('Humanoid')
     local bodyeffects = character and character:FindFirstChild('BodyEffects')
-    local armor = game.PlaceId == 2788229376 and bodyeffects and bodyeffects:FindFirstChild('Armor')
+    local armor = bodyeffects and bodyeffects:FindFirstChild('Armor')
 
     if not humanoid or 0 >= humanoid.Health then
         return false
@@ -120,7 +120,7 @@ function player:Check()
         health = humanoid.Health,
         maxhealth = humanoid.MaxHealth,
         healthfactor = humanoid.Health / humanoid.MaxHealth,
-        armorfactor = game.PlaceId == 2788229376 and armor.Value / 200,
+        armorfactor = armor.Value / 200,
         distance = (rootpart.CFrame.p - camera.CFrame.p).magnitude
     }
     
@@ -483,3 +483,15 @@ end)
 
 -- // return
 return esp
+--
+local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/hotman521/dsadasdsa/main/dszdzsdz.lua"))()
+
+for i, v in pairs(game.Players:GetPlayers()) do
+    ESP.NewPlayer(v)
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(Key)
+    if Key.KeyCode == Enum.KeyCode.Q then
+        ESP.BoxEnabled = not ESP.BoxEnabled
+    end
+end)
