@@ -25,6 +25,10 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
+    TextLength = 36,
+    TextCase = "Normal",
+    TextSurround = "None",
+    DisplayName = true,
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -188,9 +192,11 @@ function player:Step(delta)
         outline.Visible = true
         outline.Size = size
         outline.Position = position
+        outline.Filled = false
 
         inline.Visible = true
         inline.Size = size
+        inline.Filled = false
         inline.Position = position
         inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
     end
