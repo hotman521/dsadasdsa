@@ -25,6 +25,9 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
+    TextSurround = "None",
+    TextCase = "Normal",
+    TextLength = "36",
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -378,7 +381,22 @@ function player:SetHighlightColor(color, color2)
 end
 
 function player:SetNametagText(str)
-    self.nametag_text = str
+    local Text = str
+    if not Length.Disabled then
+        local Length = esp.TextLength
+        --
+        Text = Text:sub(0, Length)
+    end
+    --
+    if esp.TextCase ~= "Normal" then
+        Text = esp.TextCase == "Uppercase" and Text:upper() or Text:lower()
+    end
+    --
+    if esp.TextSurround ~= "None" then
+        Text = esp.TextSurround:sub(0, 1) .. Text .. esp.TextSurround:sub(2)
+    end
+    --
+    self.nametag_text = Text
 end
 
 function player:SetNametagEnabled(bool)
@@ -418,7 +436,6 @@ function esp.NewPlayer(player_instance)
     player.nametag_text = 'nametag'
     player.nametag_color = Color3.new(1,1,1)
     player.boxcolor = Color3.new(1,1,1)
-
     player.highlight = Instance.new('Highlight')
     player.drawings = {
         text = {},
