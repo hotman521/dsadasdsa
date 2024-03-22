@@ -1,6 +1,5 @@
 getgenv().esp = {
-    Enabled = true,
-    
+
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
     CharacterOffset = CFrame.new(0, -0.25, 0),
@@ -25,10 +24,6 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-    TextLength = 36,
-    TextCase = "Normal",
-    TextSurround = "None",
-    DisplayName = true,
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -108,7 +103,7 @@ function player:Check()
         return false
     end
 
-    local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
+    local screen_position, screen_visible = cframe_to_viewport(torso.CFrame * esp.CharacterOffset, true)
 
     if not screen_visible then
         return false
@@ -137,7 +132,7 @@ function player:Step(delta)
 
     self:SetVisible(false)
 
-    if not check_pass or esp.Enabled == false then
+    if not check_pass then
         return
     else
         self.visible = true
@@ -191,13 +186,11 @@ function player:Step(delta)
 
         outline.Visible = true
         outline.Size = size
-        outline.Filled = false
         outline.Position = position
 
         inline.Visible = true
         inline.Size = size
         inline.Position = position
-        inline.Filled = false
         inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
     end
     
@@ -321,7 +314,7 @@ function player:GetTextData(data)
         ['name']     = { text = self.instance.DisplayName },
         ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
-        ['distance'] = { text = tostring(data.distance)) },
+        ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
     }
 end
@@ -406,8 +399,6 @@ function player:SetVisible(bool)
         for i,v in next, self.drawings.skeleton do v.Visible = bool end
         for i,v in next, self.drawings.text do v[3].Visible = bool end
         for i,v in next, self.drawings.bar do v[3].Visible = bool; v[4].Visible = bool end
-        
-        self.highlight.Enabled = bool
     end
 end
 
