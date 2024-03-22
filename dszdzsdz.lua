@@ -1,5 +1,5 @@
 getgenv().esp = {
-    Enabled = true,
+    Enabled = false,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
