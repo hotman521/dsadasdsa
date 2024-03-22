@@ -25,11 +25,6 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-    TextSurround = "None",
-    TextCase = "Normal",
-    TextLength = "36",
-    DisplayName = true,
-    ConversionMethod = "Studs",
 
     TextEnabled = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -404,7 +399,7 @@ function player:SetHighlightColor(color, color2)
 end
 
 function player:SetNametagText(str)
-    self.nametag_text = Text
+    self.nametag_text = str
 end
 
 function player:SetNametagEnabled(bool)
@@ -444,6 +439,7 @@ function esp.NewPlayer(player_instance)
     player.nametag_text = 'nametag'
     player.nametag_color = Color3.new(1,1,1)
     player.boxcolor = Color3.new(1,1,1)
+
     player.highlight = Instance.new('Highlight')
     player.drawings = {
         text = {},
