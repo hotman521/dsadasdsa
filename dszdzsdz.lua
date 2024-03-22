@@ -187,11 +187,13 @@ function player:Step(delta)
 
         outline.Visible = true
         outline.Size = size
+        outline.Filled = false
         outline.Position = position
 
         inline.Visible = true
         inline.Size = size
         inline.Position = position
+        inline.Filled = false
         inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
     end
     
