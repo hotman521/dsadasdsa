@@ -108,7 +108,7 @@ function player:Check()
         return false
     end
 
-    local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
+    local screen_position, screen_visible = cframe_to_viewport(torso.CFrame * esp.CharacterOffset, true)
 
     if not screen_visible then
         return false
@@ -191,13 +191,13 @@ function player:Step(delta)
 
         outline.Visible = true
         outline.Size = size
-        outline.Filled = false
         outline.Position = position
+        outline.Filled = false
 
         inline.Visible = true
+        inline.Filled = false
         inline.Size = size
         inline.Position = position
-        inline.Filled = false
         inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
     end
     
@@ -321,7 +321,7 @@ function player:GetTextData(data)
         ['name']     = { text = self.instance.DisplayName },
         ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
-        ['distance'] = { text = tostring(data.distance)) },
+        ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
     }
 end
