@@ -316,30 +316,9 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
-    local Text
-    --
-    if esp.DisplayName then
-        Text = ((self.instance.DisplayName ~= nil and self.instance.DisplayName ~= "" and self.instance.DisplayName ~= " ") and self.instance.DisplayName or self.instance.Name)
-    else
-        Text = self.instance.Name
-    end
-    --
-    local Length = esp.TextLength
-    if Length ~= 36 then
-        Text = Text:sub(0, Length)
-    end
-    --
-    if esp.TextCase ~= "Normal" then
-        Text = esp.TextCase == "Uppercase" and Text:upper() or Text:lower()
-    end
-    --
-    if esp.TextSurround ~= "None" then
-        Text = esp.TextSurround:sub(0, 1) .. Text .. esp.TextSurround:sub(2)
-    end
-    --
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
-        ['name']     = { text = Text },
+        ['name']     = { text = self.instance.DisplayName },
         ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(data.distance)) },
