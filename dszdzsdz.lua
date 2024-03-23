@@ -411,8 +411,11 @@ end
 function esp.NewPlayer(player_instance, type)
     local player = setmetatable({}, player)
 
+    if type == "ase" then
+        player.priority = true
+    end
+
     player.instance = player_instance
-    player.priority = true
     player.useboxcolor = false
     player.nametag_enabled = false
     player.nametag_text = 'nametag'
