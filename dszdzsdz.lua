@@ -410,14 +410,22 @@ function player:SetVisible(bool)
     end
 end
 
-function esp.SetTarget(player_instance, bool)
+function esp.SetTarget(player_instance)
     local player = setmetatable({}, player)
 
     player.instance = player_instance
-    player.priority = bool
-    print(player.priority)
+    player.remove_esp = function() 
+        for i,v in next, player.drawings.box do v:Remove() end
+        for i,v in next, player.drawings.skeleton do v:Remove() end
+        for i,v in next, player.drawings.text do v[3]:Remove() end
+        for i,v in next, player.drawings.bar do v[3]:Remove(); v[4]:Remove() end
 
-    return player, print(player.priority)
+        player.highlight:Destroy()
+    end
+
+    player.remove_esp()
+
+    return player
 end
 
 -- // new player
