@@ -1,6 +1,6 @@
 getgenv().esp = {
     Enabled = true,
-    MaxDistance = false,
+    MaxDistance = true,
     MaxDistanceAmount = 100,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
@@ -150,7 +150,7 @@ function player:Step(delta)
     local box_drawings = self.drawings.box
     local MaxDistance
 
-    if esp.MaxDistance == true then
+    if esp.MaxDistance then
         MaxDistance = esp.MaxDistanceAmount
     else
         MaxDistance = 10000
