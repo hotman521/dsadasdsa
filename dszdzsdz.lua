@@ -8,7 +8,7 @@ getgenv().esp = {
 
     PriorityColor = Color3.fromRGB(0, 0, 255),
     TargetColor = Color3.fromRGB(255, 0, 0),
-    LocalPlayerColor = Color3.fromRGB(255, 255, 0),
+    LocalPlayerColor = Color3.fromRGB(255, 0, 255),
 
     BoxEnabled = true,
     BoxCorners = true,
