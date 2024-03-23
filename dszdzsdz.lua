@@ -144,6 +144,7 @@ function player:Step(delta)
     local size = self:GetBoxSize(check_data.position, check_data.cframe)
     local position = vector2_floor(check_data.position - size / 2)
     local color = self.priority and esp.PriorityColor
+    local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
 
     if esp.BoxEnabled and esp.BoxCorners then
@@ -168,7 +169,7 @@ function player:Step(delta)
             outline.Visible = true
             inline.Filled = true
             outline.Filled = true
-            inline.Color = self.localplayer and esp.LocalPlayerColor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
+            inline.Color = localplayercolor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
 
             outline.Position = inline.Position - Vector2.new(1, 1)
             
@@ -196,7 +197,7 @@ function player:Step(delta)
         inline.Filled = false
         inline.Size = size
         inline.Position = position
-        inline.Color = self.localplayer and esp.LocalPlayerColor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
+        inline.Color = localplayercolor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
     end
     
     self.highlight.Enabled = esp.ChamsEnabled
@@ -264,7 +265,7 @@ function player:Step(delta)
 
             drawing.Visible = true
             drawing.Text = (layout.prefix or '') .. (data.text or '') .. (layout.suffix or '')
-            drawing.Color = data.color or color or layout.color or esp.TextColor
+            drawing.Color = data.color or layout.color or esp.TextColor
 
             if layout.bar then
                 drawing.Position = position + (
@@ -302,7 +303,7 @@ function player:Step(delta)
                 cache[part_b] = screen_position_b
 
                 drawing.Visible = true
-                drawing.Color = color or esp.SkeletonColor
+                drawing.Color = esp.SkeletonColor
                 drawing.From = screen_position_a
                 drawing.To = screen_position_b
             end
