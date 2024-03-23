@@ -6,7 +6,7 @@ getgenv().esp = {
     CharacterOffset = CFrame.new(0, -0.25, 0),
     UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
 
-    PriorityColor = Color3.fromRGB(255, 0, 255),
+    PriorityColor = Color3.fromRGB(255, 255, 0),
     TargetColor = Color3.fromRGB(255, 0, 0),
     LocalPlayerColor = Color3.fromRGB(255, 0, 255),
 
@@ -414,7 +414,10 @@ function esp.NewPlayer(player_instance, type)
     local player = setmetatable({}, player)
 
     if type == "LocalPlayer" then
+        player.priority = false
         player.localplayer = true
+    else
+        player.localplayer = false
     end
 
     player.instance = player_instance
