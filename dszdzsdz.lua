@@ -270,7 +270,9 @@ function player:Step(delta)
             if layout.bar then
                 drawing.Position = position + (
                     layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 2), size.Y - bar_data[layout.bar].progress * size.Y - 3) or
-                    layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y - bar_data[layout.bar].progress * size.Y -3)               
+                    layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y - bar_data[layout.bar].progress * size.Y -3) or
+                    layout.position == 'bottom' and Vector2.new(size.X / 2, size.Y + text_positions.bottom + 2) or 
+                    layout.position == 'top' and Vector2.new(size.X / 2, -3 - (text_positions.top + 14))
                 )
             else
                 drawing.Position = position + (
