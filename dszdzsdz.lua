@@ -6,7 +6,9 @@ getgenv().esp = {
     CharacterOffset = CFrame.new(0, -0.25, 0),
     UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
 
-    PriorityColor = Color3.fromRGB(255, 0, 0),
+    PriorityColor = Color3.fromRGB(0, 0, 255),
+    TargetColor = Color3.fromRGB(255, 0, 0),
+    LocalPlayerColor = Color3.fromRGB(255, 255, 0),
 
     BoxEnabled = true,
     BoxCorners = true,
@@ -141,7 +143,7 @@ function player:Step(delta)
     
     local size = self:GetBoxSize(check_data.position, check_data.cframe)
     local position = vector2_floor(check_data.position - size / 2)
-    local color = self.priority and esp.PriorityColor
+    local color = self.priority and esp.PriorityColor or self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
 
     if esp.BoxEnabled and esp.BoxCorners then
@@ -411,12 +413,13 @@ end
 function esp.NewPlayer(player_instance, type)
     local player = setmetatable({}, player)
 
-    if type == "ase" then
-        player.priority = true
+    if type == "LocalPlayer" then
+        player.localplayer = true
     end
 
     player.instance = player_instance
     player.useboxcolor = false
+    player.priority = false
     player.nametag_enabled = false
     player.nametag_text = 'nametag'
     player.nametag_color = Color3.new(1,1,1)
