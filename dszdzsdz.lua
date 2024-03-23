@@ -148,7 +148,13 @@ function player:Step(delta)
     local color = self.priority and esp.PriorityColor
     local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
-    local MaxDistance = esp.MaxDistance and esp.MaxDistanceAmount or 10000
+    local MaxDistance
+
+    if esp.MaxDistance == true then
+        MaxDistance = esp.MaxDistanceAmount
+    else
+        MaxDistance = 10000
+    end
 
     if MaxDistance > check_data.distance then
         if esp.BoxEnabled and esp.BoxCorners then
