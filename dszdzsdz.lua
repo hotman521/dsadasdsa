@@ -143,7 +143,7 @@ function player:Step(delta)
     
     local size = self:GetBoxSize(check_data.position, check_data.cframe)
     local position = vector2_floor(check_data.position - size / 2)
-    local color = self.priority and esp.PriorityColor or self.localplayer and esp.LocalPlayerColor
+    local color = self.priority and esp.PriorityColor
     local box_drawings = self.drawings.box
 
     if esp.BoxEnabled and esp.BoxCorners then
@@ -168,7 +168,7 @@ function player:Step(delta)
             outline.Visible = true
             inline.Filled = true
             outline.Filled = true
-            inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
+            inline.Color = self.localplayer and esp.LocalPlayerColor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
 
             outline.Position = inline.Position - Vector2.new(1, 1)
             
@@ -196,7 +196,7 @@ function player:Step(delta)
         inline.Filled = false
         inline.Size = size
         inline.Position = position
-        inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
+        inline.Color = self.localplayer and esp.LocalPlayerColor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
     end
     
     self.highlight.Enabled = esp.ChamsEnabled
