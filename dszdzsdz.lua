@@ -149,7 +149,7 @@ function player:Step(delta)
     local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
 
-    if esp.MaxDistance and esp.MaxDistanceAmount > check_data.distance then
+    if esp.MaxDistance and esp.MaxDistanceAmount > check_data.distance or 10000 > check_data.distance then
         if esp.BoxEnabled and esp.BoxCorners then
     
             local corner_size = size.X / 3
