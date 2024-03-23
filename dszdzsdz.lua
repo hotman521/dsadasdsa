@@ -415,6 +415,7 @@ function esp.SetTarget(player_instance, bool)
 
     player.instance = player_instance
     player.priority = bool
+    print(player.priority)
 end
 
 -- // new player
