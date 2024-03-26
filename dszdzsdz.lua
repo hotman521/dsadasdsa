@@ -1,5 +1,5 @@
 getgenv().esp = {
-    Enabled = true,
+    Enabled = false,
     MaxDistance = true,
     MaxDistanceAmount = 100,
 
