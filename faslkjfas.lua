@@ -836,3 +836,5 @@ for Index, Player in pairs(Atlanta:GetPlayers()) do
         Atlanta:PlayerAdded(Validated) 
     end)
 end
+
+return ESP;
