@@ -105,7 +105,7 @@ function player:Check()
         return false
     end
 
-    local screen_position, screen_visible = cframe_to_viewport(torso.CFrame * esp.CharacterOffset, true)
+    local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
 
     if not screen_visible then
         return false
