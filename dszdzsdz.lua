@@ -99,7 +99,6 @@ function player:Check()
     local rootpart = character and character:FindFirstChild('HumanoidRootPart')
     local torso = character and character:FindFirstChild('UpperTorso')
     local humanoid = rootpart and character:FindFirstChild('Humanoid')
-    local bodyeffects = character and character:FindFirstChild('BodyEffects')
 
     if not humanoid or 0 >= humanoid.Health then
         return false
