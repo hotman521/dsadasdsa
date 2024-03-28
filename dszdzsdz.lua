@@ -25,7 +25,7 @@ getgenv().esp = {
 
     ChamsEnabled = true,
     ChamsInnerColor = Color3.fromRGB(0, 255, 0),
-    ChamsOuterColor = Color3.fromRGB(0, 0, 0),
+    ChamsOuterColor = Color3.fromRGB(255, 255, 255),
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
