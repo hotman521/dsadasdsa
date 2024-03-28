@@ -37,7 +37,7 @@ getgenv().esp = {
         ['name']     = { enabled = true, position = 'top', order = 2 },
         ['health']   = { enabled = true, position = 'left', order = 1, bar = 'health' },
         ['tool']     = { enabled = true, position = 'bottom', suffix = '', prefix = '', order = 1 },
-        ['distance'] = { enabled = false, position = 'bottom', suffix = 'm', order = 2 },
+        ['distance'] = { enabled = false, position = 'bottom', suffix = 'st', order = 2 },
     },
 
     BarLayout = {
