@@ -24,7 +24,7 @@ getgenv().esp = {
     SkeletonMaxDistance = 300,
 
     ChamsEnabled = true,
-    ChamsInnerColor = Color3.fromRGB(102, 60, 153),
+    ChamsInnerColor = Color3.fromRGB(0, 255, 0),
     ChamsOuterColor = Color3.fromRGB(0, 0, 0),
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
