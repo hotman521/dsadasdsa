@@ -31,6 +31,7 @@ getgenv().esp = {
 
 
     TextEnabled = true,
+    UseDisplay = true,
     TextColor = Color3.fromRGB(255, 255, 255),
     TextLayout = {
         ['nametag']  = { enabled = true, position = 'top', order = 1 },
@@ -324,7 +325,7 @@ function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
-        ['name']     = { text = self.instance.DisplayName },
+        ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or  self.instance.Name},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
