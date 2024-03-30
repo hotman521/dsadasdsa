@@ -416,10 +416,8 @@ function player:SetVisible(bool)
     end
 end
 
-function esp.SetTarget(player_instance)
-    local player = setmetatable({}, player)
-
-    player:SetPriority(true)
+function esp.SetTarget()
+    self:SetPriority(true)
 end
 
 -- // new player
