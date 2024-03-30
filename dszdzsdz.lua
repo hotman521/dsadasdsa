@@ -432,8 +432,6 @@ function esp.NewPlayer(player_instance, type)
     player.nametag_color = Color3.new(1,1,1)
     player.boxcolor = Color3.new(1,1,1)
 
-    print(player:GetPriority())
-
     player.highlight = Instance.new('Highlight')
     player.drawings = {
         text = {},
