@@ -425,8 +425,8 @@ function esp.NewPlayer(player_instance, type)
     end
 
     player.instance = player_instance
-    player.useboxcolor = false
     player.priority = false
+    player.useboxcolor = false
     player.nametag_enabled = false
     player.nametag_text = 'nametag'
     player.nametag_color = Color3.new(1,1,1)
