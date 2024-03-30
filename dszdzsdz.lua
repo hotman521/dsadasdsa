@@ -416,10 +416,6 @@ function player:SetVisible(bool)
     end
 end
 
-function esp.SetTarget()
-    self:SetPriority(true)
-end
-
 -- // new player
 function esp.NewPlayer(player_instance, type)
     local player = setmetatable({}, player)
@@ -435,6 +431,8 @@ function esp.NewPlayer(player_instance, type)
     player.nametag_text = 'nametag'
     player.nametag_color = Color3.new(1,1,1)
     player.boxcolor = Color3.new(1,1,1)
+
+    player:GetPriority()
 
     player.highlight = Instance.new('Highlight')
     player.drawings = {
