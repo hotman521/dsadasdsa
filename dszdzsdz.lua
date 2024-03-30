@@ -332,7 +332,7 @@ function player:GetTextData(data)
     }
 end
 
-function player:GetBarData(data) -- progress should be a number 0-1, you can get this by doing value / maxvalue
+function player: (data) -- progress should be a number 0-1, you can get this by doing value / maxvalue
     return {
         ['health'] = { progress = data.healthfactor },
     }
@@ -414,6 +414,12 @@ function player:SetVisible(bool)
 
         self.highlight.Enabled = bool
     end
+end
+
+function esp.SetTarget(player_instance)
+    local player = setmetatable({}, player)
+
+    player:SetPriority(true)
 end
 
 -- // new player
