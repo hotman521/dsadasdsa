@@ -96,14 +96,12 @@ function player:Check()
     local rootpart = character and character:FindFirstChild('HumanoidRootPart')
     local torso = character and character:FindFirstChild('UpperTorso')
     local humanoid = rootpart and character:FindFirstChild('Humanoid')
-    local bodyeffects = character and character:FindFirstChild('BodyEffects')
-    local armor = bodyeffects and bodyeffects:FindFirstChild('Armor')
 
     if not humanoid or 0 >= humanoid.Health then
         return false
     end
 
-    local screen_position, screen_visible = cframe_to_viewport(torso.CFrame * esp.CharacterOffset, true)
+    local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
 
     if not screen_visible then
         return false
@@ -114,13 +112,11 @@ function player:Check()
         rootpart = rootpart,
         humanoid = humanoid,
         bodyeffects = bodyeffects,
-        armor = armor,
         position = screen_position,
         cframe = rootpart.CFrame * esp.CharacterOffset,
         health = humanoid.Health,
         maxhealth = humanoid.MaxHealth,
         healthfactor = humanoid.Health / humanoid.MaxHealth,
-        armorfactor = armor.Value / 200,
         distance = (rootpart.CFrame.p - camera.CFrame.p).magnitude
     }
     
