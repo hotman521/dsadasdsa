@@ -29,7 +29,7 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-    WallCheck = false,
+    WallCheck = true,
     
     TextEnabled = true,
     UseDisplay = true,
@@ -141,7 +141,7 @@ function player:Check()
 
     local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
 
-    if not screen_visible or (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), LuckyHub:GetIgnore(true)})) then
+    if not screen_visible or (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
         return false
     end
 
