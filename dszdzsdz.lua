@@ -29,7 +29,8 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-
+    WallCheck = false,
+    
     TextEnabled = true,
     UseDisplay = true,
     TextColor = Color3.fromRGB(255, 255, 255),
@@ -80,6 +81,39 @@ function cframe_to_viewport(cframe, floor)
     return position, visible
 end
 
+function GetOrigin(Origin)
+        if Origin == "Head" then
+            local Object, Humanoid, RootPart = LuckyHub:ValidateClient(Client)
+            local Head = Object:FindFirstChild("Head")
+            --
+            if Head and Head:IsA("RootPart") then
+                return Head.CFrame.Position
+            end
+        elseif Origin == "Torso" then
+            local Object, Humanoid, RootPart = LuckyHub:ValidateClient(Client)
+            --
+            if RootPart then
+                return RootPart.CFrame.Position
+            end
+        end
+        --
+    return Workspace.CurrentCamera.CFrame.Position
+end
+    --
+function LuckyHub:GetIgnore(Unpacked)
+    return
+end
+
+function RayCast(Part, Origin, Ignore, Distance)
+    local Ignore = Ignore or {}
+    local Distance = Distance or 2000
+    --
+    local Cast = Ray.new(Origin, (Part.Position - Origin).Unit * Distance)
+    local Hit = Workspace:FindPartOnRayWithIgnoreList(Cast, Ignore)
+    --
+    return (Hit and Hit:IsDescendantOf(Part.Parent)) == true, Hit
+end
+
 -- // drawing
 local old; old = hookfunction(Drawing.new, function(class, properties)
     local drawing = old(class)
@@ -107,7 +141,7 @@ function player:Check()
 
     local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
 
-    if not screen_visible then
+    if not screen_visible or (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), LuckyHub:GetIgnore(true)})) then
         return false
     end
 
