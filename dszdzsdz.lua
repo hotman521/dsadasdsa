@@ -31,12 +31,14 @@ getgenv().esp = {
         ['nametag']  = { enabled = true, position = 'top', order = 1 },
         ['name']     = { enabled = true, position = 'top', order = 2 },
         ['health']   = { enabled = true, position = 'left', order = 1, bar = 'health' },
+        ['armor']    = { enabled = true, position = 'left', order = 2, bar = 'armor' },
         ['tool']     = { enabled = true, position = 'bottom', suffix = '', prefix = '', order = 1 },
         ['distance'] = { enabled = false, position = 'bottom', suffix = 'm', order = 2 },
     },
 
     BarLayout = {
         ['health'] = { enabled = true, position = 'left', order = 1, color_empty = Color3.fromRGB(176, 84, 84), color_full = Color3.fromRGB(140, 250, 140) },
+        ['armor']  = { enabled = true, position = 'left', order = 2, color_empty = Color3.fromRGB(58, 58, 97), color_full = Color3.fromRGB(72, 72, 250) }
     }
     
 }
@@ -319,16 +321,18 @@ function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
-        ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or  self.instance.Name},
+        ['name']     = { text = self.instance.DisplayName },
+        ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
     }
 end
 
-function player: (data) -- progress should be a number 0-1, you can get this by doing value / maxvalue
+function player:GetBarData(data) -- progress should be a number 0-1, you can get this by doing value / maxvalue aka armor / maxarmor
     return {
         ['health'] = { progress = data.healthfactor },
+        ['armor'] = { progress = data.armorfactor }
     }
 end
 
@@ -409,8 +413,12 @@ function player:SetVisible(bool)
 end
 
 -- // new player
-function esp.NewPlayer(player_instance)
+function esp.NewPlayer(player_instance, type)
     local player = setmetatable({}, player)
+
+    if type == "LocalPlayer" then
+        player.localplayer = true
+    end
 
     player.instance = player_instance
     player.priority = false
