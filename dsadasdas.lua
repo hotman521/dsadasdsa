@@ -3,7 +3,6 @@ getgenv().crosshair = {
     refreshrate = 0,
     mode = 'mouse', -- center, mouse, custom
     position = Vector2.new(0,0), -- custom position
-    tweentransparency = false,
 
     width = 1.5,
     length = 10,
@@ -113,11 +112,6 @@ runservice.PostSimulation:Connect(function()
                 outline.From = position + solve(angle, crosshair.radius - 1)
                 outline.To = position + solve(angle, crosshair.radius + length + 1)
                 outline.Thickness = crosshair.width + 1.5
-
-                if crosshair.tweentransparency then
-                    tweenservice:Create(inline, tweenInfo, {Transparency = 0}):Play()
-                    tweenservice:Create(outline, tweenInfo, {Transparency = 0}):Play()
-                end
             end
         else
             for idx = 1, 4 do
