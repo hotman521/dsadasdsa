@@ -29,7 +29,8 @@ getgenv().esp = {
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-    WallCheck = true,
+    WallCheck = false,
+    AliveCheck = true,
     
     TextEnabled = true,
     UseDisplay = true,
@@ -94,12 +95,24 @@ function GetRootPart(Player, Character, Humanoid)
 end
 
 function ValidateClient(Player)
-        local Object = GetCharacter(Player)
-        local Humanoid = (Object and GetHumanoid(Player, Object))
-        local RootPart = (Humanoid and GetRootPart(Player, Object, Humanoid))
-        --
-        return Object, Humanoid, RootPart
+    local Object = GetCharacter(Player)
+    local Humanoid = (Object and GetHumanoid(Player, Object))
+    local RootPart = (Humanoid and GetRootPart(Player, Object, Humanoid))
+    --
+    return Object, Humanoid, RootPart
+end
+
+function GetHealth(Player, Character, Humanoid)
+    if Humanoid then
+        return math.clamp(Humanoid.Health, 0, Humanoid.MaxHealth), Humanoid.MaxHealth
     end
+end
+--
+function ClientAlive(Player, Character, Humanoid)
+    local Health, MaxHealth = GetHealth(Player, Character, Humanoid)
+    --
+    return (Health > 0)
+end
 
 function GetOrigin(Origin)
         if Origin == "Head" then
@@ -161,7 +174,7 @@ function player:Check()
 
     local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
 
-    if not screen_visible or (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
+    if not screen_visible or (esp.AliveCheck and not ClientAlive(self.instance, character, humanoid)) or (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
         return false
     end
 
