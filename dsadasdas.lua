@@ -114,11 +114,9 @@ runservice.PostSimulation:Connect(function()
                 outline.To = position + solve(angle, crosshair.radius + length + 1)
                 outline.Thickness = crosshair.width + 1.5
 
-                if inline and outline then
-                        if crosshair.tweentransparency then
-                            tweenservice:Create(inline, tweenInfo, {Transparency = 0}):Play()
-                            tweenservice:Create(outline, tweenInfo, {Transparency = 0}):Play()
-                        end
+                if crosshair.tweentransparency then
+                    tweenservice:Create(inline, tweenInfo, {Transparency = 0}):Play()
+                    tweenservice:Create(outline, tweenInfo, {Transparency = 0}):Play()
                 end
             end
         else
