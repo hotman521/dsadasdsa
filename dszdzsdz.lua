@@ -81,16 +81,36 @@ function cframe_to_viewport(cframe, floor)
     return position, visible
 end
 
+function GetCharacter(Player)
+    return Player.Character
+end
+
+function GetHumanoid(Player, Character)
+    return Character:FindFirstChildOfClass("Humanoid")
+end
+--
+function GetRootPart(Player, Character, Humanoid)
+    return Humanoid.RootPart
+end
+
+function ValidateClient(Player)
+        local Object = GetCharacter(Player)
+        local Humanoid = (Object and GetHumanoid(Player, Object))
+        local RootPart = (Humanoid and GetRootPart(Player, Object, Humanoid))
+        --
+        return Object, Humanoid, RootPart
+    end
+
 function GetOrigin(Origin)
         if Origin == "Head" then
-            local Object, Humanoid, RootPart = LuckyHub:ValidateClient(Client)
+            local Object, Humanoid, RootPart = ValidateClient(Client)
             local Head = Object:FindFirstChild("Head")
             --
             if Head and Head:IsA("RootPart") then
                 return Head.CFrame.Position
             end
         elseif Origin == "Torso" then
-            local Object, Humanoid, RootPart = LuckyHub:ValidateClient(Client)
+            local Object, Humanoid, RootPart = ValidateClient(Client)
             --
             if RootPart then
                 return RootPart.CFrame.Position
