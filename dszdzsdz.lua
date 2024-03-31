@@ -100,7 +100,7 @@ function GetOrigin(Origin)
     return Workspace.CurrentCamera.CFrame.Position
 end
     --
-function LuckyHub:GetIgnore(Unpacked)
+function GetIgnore(Unpacked)
     return
 end
 
