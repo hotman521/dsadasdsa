@@ -307,18 +307,16 @@ function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
-        ['name']     = { text = self.instance.DisplayName },
-        ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
+        ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or  self.instance.Name},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
     }
 end
 
-function player:GetBarData(data) -- progress should be a number 0-1, you can get this by doing value / maxvalue aka armor / maxarmor
+function player:GetBarData(data) -- progress should be a number 0-1, you can get this by doing value / maxvalue
     return {
         ['health'] = { progress = data.healthfactor },
-        ['armor'] = { progress = data.armorfactor }
     }
 end
 
