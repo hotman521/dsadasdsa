@@ -102,10 +102,7 @@ runservice.PostSimulation:Connect(function()
                     local resize_length = tick() * crosshair.resize_speed % 180
                     length = crosshair.resize_min + math.sin(math.rad(resize_length)) * crosshair.resize_max
                 end
-
-                tweenservice:Create(inline, tweenInfo, {Transparency = 0}):Play()
-                tweenservice:Create(outline, tweenInfo, {Transparency = 0}):Play()
-    
+                    
                 inline.Visible = true
                 inline.Color = crosshair.color
                 inline.From = position + solve(angle, crosshair.radius)
@@ -115,7 +112,14 @@ runservice.PostSimulation:Connect(function()
                 outline.Visible = true
                 outline.From = position + solve(angle, crosshair.radius - 1)
                 outline.To = position + solve(angle, crosshair.radius + length + 1)
-                outline.Thickness = crosshair.width + 1.5    
+                outline.Thickness = crosshair.width + 1.5
+
+                if inline and outline then
+                        if crosshair.tweentransparency then
+                            tweenservice:Create(inline, tweenInfo, {Transparency = 0}):Play()
+                            tweenservice:Create(outline, tweenInfo, {Transparency = 0}):Play()
+                        end
+                end
             end
         else
             for idx = 1, 4 do
