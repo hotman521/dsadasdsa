@@ -1,11 +1,16 @@
 getgenv().esp = {
+    Enabled = false,
+    MaxDistance = true,
+    MaxDistanceAmount = 100,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4, 5.75, 1.5),
     CharacterOffset = CFrame.new(0, -0.25, 0),
-    UseBoundingBox = false, -- will use bounding box instead of size preset for dynamic box
+    UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
 
-    PriorityColor = Color3.new(1,0.25,0.25),
+    PriorityColor = Color3.fromRGB(255, 255, 0),
+    TargetColor = Color3.fromRGB(255, 0, 0),
+    LocalPlayerColor = Color3.fromRGB(255, 0, 255),
 
     BoxEnabled = true,
     BoxCorners = true,
@@ -19,26 +24,25 @@ getgenv().esp = {
     SkeletonMaxDistance = 300,
 
     ChamsEnabled = true,
-    ChamsInnerColor = Color3.fromRGB(102, 60, 153),
-    ChamsOuterColor = Color3.fromRGB(0, 0, 0),
+    ChamsInnerColor = Color3.fromRGB(0, 255, 0),
+    ChamsOuterColor = Color3.fromRGB(255, 255, 255),
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
 
     TextEnabled = true,
+    UseDisplay = true,
     TextColor = Color3.fromRGB(255, 255, 255),
     TextLayout = {
         ['nametag']  = { enabled = true, position = 'top', order = 1 },
         ['name']     = { enabled = true, position = 'top', order = 2 },
         ['health']   = { enabled = true, position = 'left', order = 1, bar = 'health' },
-        ['armor']    = { enabled = true, position = 'left', order = 2, bar = 'armor' },
         ['tool']     = { enabled = true, position = 'bottom', suffix = '', prefix = '', order = 1 },
-        ['distance'] = { enabled = false, position = 'bottom', suffix = 'm', order = 2 },
+        ['distance'] = { enabled = false, position = 'bottom', suffix = 'st', order = 2 },
     },
 
     BarLayout = {
         ['health'] = { enabled = true, position = 'left', order = 1, color_empty = Color3.fromRGB(176, 84, 84), color_full = Color3.fromRGB(140, 250, 140) },
-        ['armor']  = { enabled = true, position = 'left', order = 2, color_empty = Color3.fromRGB(58, 58, 97), color_full = Color3.fromRGB(72, 72, 250) }
     }
     
 }
@@ -321,7 +325,7 @@ function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
-        ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or  self.instance.Name},
+        ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or self.instance.Name},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
@@ -407,8 +411,6 @@ function player:SetVisible(bool)
         for i,v in next, self.drawings.skeleton do v.Visible = bool end
         for i,v in next, self.drawings.text do v[3].Visible = bool end
         for i,v in next, self.drawings.bar do v[3].Visible = bool; v[4].Visible = bool end
-
-        self.highlight.Enabled = bool
     end
 end
 
