@@ -3,6 +3,7 @@ getgenv().crosshair = {
     refreshrate = 0,
     mode = 'mouse', -- center, mouse, custom
     position = Vector2.new(0,0), -- custom position
+    tweentransparency = false,
 
     width = 1.5,
     length = 10,
@@ -43,6 +44,8 @@ local drawings = {
         Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = ""}),
     }
 }
+
+local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true)
 
 for idx = 1, 4 do
     drawings.crosshair[idx] = Drawing.new('Line')
@@ -99,6 +102,9 @@ runservice.PostSimulation:Connect(function()
                     local resize_length = tick() * crosshair.resize_speed % 180
                     length = crosshair.resize_min + math.sin(math.rad(resize_length)) * crosshair.resize_max
                 end
+
+                tweenservice:Create(inline, tweenInfo, {Transparency = 0}):Play()
+                tweenservice:Create(outline, tweenInfo, {Transparency = 0}):Play()
     
                 inline.Visible = true
                 inline.Color = crosshair.color
