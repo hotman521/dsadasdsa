@@ -100,12 +100,14 @@ function player:Check()
     local rootpart = character and character:FindFirstChild('HumanoidRootPart')
     local torso = character and character:FindFirstChild('UpperTorso')
     local humanoid = rootpart and character:FindFirstChild('Humanoid')
+    local bodyeffects = character and character:FindFirstChild('BodyEffects')
+    local armor = bodyeffects and bodyeffects:FindFirstChild('Armor')
 
     if not humanoid or 0 >= humanoid.Health then
         return false
     end
 
-    local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
+    local screen_position, screen_visible = cframe_to_viewport(torso.CFrame * esp.CharacterOffset, true)
 
     if not screen_visible then
         return false
@@ -116,11 +118,13 @@ function player:Check()
         rootpart = rootpart,
         humanoid = humanoid,
         bodyeffects = bodyeffects,
+        armor = armor,
         position = screen_position,
         cframe = rootpart.CFrame * esp.CharacterOffset,
         health = humanoid.Health,
         maxhealth = humanoid.MaxHealth,
         healthfactor = humanoid.Health / humanoid.MaxHealth,
+        armorfactor = armor.Value / 200,
         distance = (rootpart.CFrame.p - camera.CFrame.p).magnitude
     }
     
@@ -132,7 +136,7 @@ function player:Step(delta)
 
     self:SetVisible(false)
 
-    if not check_pass or esp.Enabled == false then
+    if not check_pass then
         return
     else
         self.visible = true
@@ -141,179 +145,165 @@ function player:Step(delta)
     local size = self:GetBoxSize(check_data.position, check_data.cframe)
     local position = vector2_floor(check_data.position - size / 2)
     local color = self.priority and esp.PriorityColor
-    local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
-    local MaxDistance
 
-    if esp.MaxDistance then
-        MaxDistance = esp.MaxDistanceAmount
-    else
-        MaxDistance = 10000
+    if esp.BoxEnabled and esp.BoxCorners then
+
+        local corner_size = size.X / 3
+
+        box_drawings[9].Position = position
+        box_drawings[10].Position = position + Vector2.new(size.X - 1, 0)
+        box_drawings[11].Position = position + Vector2.new(0, size.Y - corner_size)
+        box_drawings[12].Position = position + Vector2.new(size.X - 1, size.Y - corner_size)
+
+        box_drawings[13].Position = position
+        box_drawings[14].Position = position + Vector2.new(size.X - corner_size, 0)
+        box_drawings[15].Position = position + Vector2.new(0, size.Y - 1)
+        box_drawings[16].Position = position + Vector2.new(size.X - corner_size, size.Y - 1)
+
+        for i = 1, 8 do
+            local outline = box_drawings[i]
+            local inline = box_drawings[i + 8]
+
+            inline.Visible = true
+            outline.Visible = true
+            inline.Filled = true
+            outline.Filled = true
+            inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
+
+            outline.Position = inline.Position - Vector2.new(1, 1)
+            
+            if i > 4 then
+                inline.Size = Vector2.new(corner_size, 1)
+                outline.Size = Vector2.new(corner_size + 2, 3)
+            else
+                inline.Size = Vector2.new(1, corner_size)
+                outline.Size = Vector2.new(3, corner_size + 2)
+            end
+        end
+
+
+
+    elseif esp.BoxEnabled then
+        local outline = box_drawings[1]
+        local inline = box_drawings[9]
+
+        outline.Visible = true
+        outline.Size = size
+        outline.Position = position
+
+        inline.Visible = true
+        inline.Size = size
+        inline.Position = position
+        inline.Color = color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
+    end
+    
+    self.highlight.Enabled = esp.ChamsEnabled
+    self.highlight.FillColor = (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
+    self.highlight.FillTransparency = esp.ChamsInnerTransparency
+    self.highlight.OutlineColor = (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
+    self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
+    self.highlight.Parent = check_data.character
+    self.highlight.Adornee = check_data.character
+
+    local bar_data = self:GetBarData(check_data)
+    local bar_positions = { top = 0, bottom = 0, left = 0, right = 0 }
+
+    for idx, data in next, self.drawings.bar do
+        local flag = data[1]
+        local layout = data[2]
+        local outline = data[3]
+        local inline = data[4]
+        local data = bar_data[flag]
+
+        if not layout.enabled or data.enabled == false then
+            continue
+        end
+
+        local progress = data.progress or 0
+        local vertical = layout.position == 'left' or layout.position == 'right'
+
+        outline.Visible = true
+        inline.Visible = true
+
+        outline.Size = vertical and Vector2.new(3, size.Y + 2) or Vector2.new(size.X + 2, 3)
+        outline.Position = position + (
+            layout.position == 'top' and Vector2.new(-1, -(5 + bar_positions.top)) or
+            layout.position == 'bottom' and Vector2.new(-1, size.Y + 2 + bar_positions.bottom) or
+            layout.position == 'left' and Vector2.new(-5-bar_positions.left, -1) or
+            layout.position == 'right' and Vector2.new(size.X + 2 + bar_positions.right, -1)
+        )
+
+        inline.Color = layout.color_empty:lerp(layout.color_full, progress)
+        inline.Size = vertical and Vector2.new(1, progress * size.Y) or Vector2.new(progress * size.X, 1)
+
+        if vertical then
+            inline.Position = outline.Position + Vector2.new(1,1 + size.Y - progress * size.Y)
+        else
+            inline.Position = outline.Position + Vector2.new(size.X - progress * size.X ,1)
+        end
+
+        bar_positions[layout.position] += 4
+
     end
 
-    if MaxDistance > check_data.distance then
-        if esp.BoxEnabled and esp.BoxCorners then
-    
-            local corner_size = size.X / 3
-    
-            box_drawings[9].Position = position
-            box_drawings[10].Position = position + Vector2.new(size.X - 1, 0)
-            box_drawings[11].Position = position + Vector2.new(0, size.Y - corner_size)
-            box_drawings[12].Position = position + Vector2.new(size.X - 1, size.Y - corner_size)
-    
-            box_drawings[13].Position = position
-            box_drawings[14].Position = position + Vector2.new(size.X - corner_size, 0)
-            box_drawings[15].Position = position + Vector2.new(0, size.Y - 1)
-            box_drawings[16].Position = position + Vector2.new(size.X - corner_size, size.Y - 1)
-    
-            for i = 1, 8 do
-                local outline = box_drawings[i]
-                local inline = box_drawings[i + 8]
-    
-                inline.Visible = true
-                outline.Visible = true
-                inline.Filled = true
-                outline.Filled = true
-                inline.Color = localplayercolor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
-    
-                outline.Position = inline.Position - Vector2.new(1, 1)
-                
-                if i > 4 then
-                    inline.Size = Vector2.new(corner_size, 1)
-                    outline.Size = Vector2.new(corner_size + 2, 3)
-                else
-                    inline.Size = Vector2.new(1, corner_size)
-                    outline.Size = Vector2.new(3, corner_size + 2)
-                end
-            end
-    
-    
-    
-        elseif esp.BoxEnabled then
-            local outline = box_drawings[1]
-            local inline = box_drawings[9]
-    
-            outline.Visible = true
-            outline.Size = size
-            outline.Position = position
-            outline.Filled = false
-    
-            inline.Visible = true
-            inline.Filled = false
-            inline.Size = size
-            inline.Position = position
-            inline.Color = localplayercolor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
-        end
-        
-        self.highlight.Enabled = esp.ChamsEnabled
-        self.highlight.FillColor = (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
-        self.highlight.FillTransparency = esp.ChamsInnerTransparency
-        self.highlight.OutlineColor = (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
-        self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
-        self.highlight.Parent = check_data.character
-        self.highlight.Adornee = check_data.character
-    
-        local bar_data = self:GetBarData(check_data)
-        local bar_positions = { top = 0, bottom = 0, left = 0, right = 0 }
-    
-        for idx, data in next, self.drawings.bar do
+    if esp.TextEnabled then
+        local text_data = self:GetTextData(check_data)
+        local text_positions = { top = bar_positions.top, bottom = bar_positions.bottom, left = 0, right = 0 }
+
+        for idx, data in next, self.drawings.text do
             local flag = data[1]
             local layout = data[2]
-            local outline = data[3]
-            local inline = data[4]
-            local data = bar_data[flag]
-    
+            local drawing = data[3]
+            local data = text_data[flag]
+
             if not layout.enabled or data.enabled == false then
                 continue
             end
-    
-            local progress = data.progress or 0
-            local vertical = layout.position == 'left' or layout.position == 'right'
-    
-            outline.Visible = true
-            inline.Visible = true
-    
-            outline.Size = vertical and Vector2.new(3, size.Y + 2) or Vector2.new(size.X + 2, 3)
-            outline.Position = position + (
-                layout.position == 'top' and Vector2.new(-1, -(5 + bar_positions.top)) or
-                layout.position == 'bottom' and Vector2.new(-1, size.Y + 2 + bar_positions.bottom) or
-                layout.position == 'left' and Vector2.new(-5-bar_positions.left, -1) or
-                layout.position == 'right' and Vector2.new(size.X + 2 + bar_positions.right, -1)
-            )
-    
-            inline.Color = layout.color_empty:lerp(layout.color_full, progress)
-            inline.Size = vertical and Vector2.new(1, progress * size.Y) or Vector2.new(progress * size.X, 1)
-    
-            if vertical then
-                inline.Position = outline.Position + Vector2.new(1,1 + size.Y - progress * size.Y)
-            else
-                inline.Position = outline.Position + Vector2.new(size.X - progress * size.X ,1)
-            end
-    
-            bar_positions[layout.position] += 4
-    
-        end
-    
-        if esp.TextEnabled then
-            local text_data = self:GetTextData(check_data)
-            local text_positions = { top = bar_positions.top, bottom = bar_positions.bottom, left = 0, right = 0 }
-    
-            for idx, data in next, self.drawings.text do
-                local flag = data[1]
-                local layout = data[2]
-                local drawing = data[3]
-                local data = text_data[flag]
-    
-                if not layout.enabled or data.enabled == false then
-                    continue
-                end
-    
-                drawing.Visible = true
-                drawing.Text = (layout.prefix or '') .. (data.text or '') .. (layout.suffix or '')
-                drawing.Color = data.color or layout.color or esp.TextColor
-    
-                if layout.bar then
-                    drawing.Position = position + (
-                        layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 2), size.Y - bar_data[layout.bar].progress * size.Y - 3) or
-                        layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y - bar_data[layout.bar].progress * size.Y -3) or
-                        layout.position == 'bottom' and Vector2.new(size.X / 2, size.Y + text_positions.bottom + 2) or 
-                        layout.position == 'top' and Vector2.new(size.X / 2, -3 - (text_positions.top + 14))
-                    )
-                else
-                    drawing.Position = position + (
-                        layout.position == 'top' and Vector2.new(size.X / 2, -3 - (text_positions.top + 14)) or
-                        layout.position == 'bottom' and Vector2.new(size.X / 2, size.Y + text_positions.bottom + 2) or
-                        layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 2), text_positions.left - 3) or
-                        layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y + text_positions.right - 3)               
-                    )
-        
-                    text_positions[layout.position] += 14
-                end
-    
-            end 
-        end
 
-        if esp.SkeletonEnabled and esp.SkeletonMaxDistance > check_data.distance then
+            drawing.Visible = true
+            drawing.Text = (layout.prefix or '') .. (data.text or '') .. (layout.suffix or '')
+            drawing.Color = data.color or color or layout.color or esp.TextColor
+
+            if layout.bar then
+                drawing.Position = position + (
+                    layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 2), size.Y - bar_data[layout.bar].progress * size.Y - 3) or
+                    layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y - bar_data[layout.bar].progress * size.Y -3)               
+                )
+            else
+                drawing.Position = position + (
+                    layout.position == 'top' and Vector2.new(size.X / 2, -3 - (text_positions.top + 14)) or
+                    layout.position == 'bottom' and Vector2.new(size.X / 2, size.Y + text_positions.bottom + 2) or
+                    layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 2), text_positions.left - 3) or
+                    layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y + text_positions.right - 3)               
+                )
     
-            local cache = {}
-    
-            for idx, connection_data in next, skeleton_connections do
-                local drawing = self.drawings.skeleton[idx]
-                local part_a = check_data.character:FindFirstChild(connection_data[1])
-                local part_b = check_data.character:FindFirstChild(connection_data[2])
-    
-                if part_a and part_b then
-                    local screen_position_a = cache[part_a] or cframe_to_viewport(part_a.CFrame + (connection_data[3] or Vector3.new()), true)
-                    local screen_position_b = cache[part_b] or cframe_to_viewport(part_b.CFrame + (connection_data[4] or Vector3.new()), true)
-    
-                    cache[part_a] = screen_position_a
-                    cache[part_b] = screen_position_b
-    
-                    drawing.Visible = true
-                    drawing.Color = esp.SkeletonColor
-                    drawing.From = screen_position_a
-                    drawing.To = screen_position_b
-                end
+                text_positions[layout.position] += 14
+            end
+
+        end 
+    end
+
+    if esp.SkeletonEnabled and esp.SkeletonMaxDistance > check_data.distance then
+
+        local cache = {}
+
+        for idx, connection_data in next, skeleton_connections do
+            local drawing = self.drawings.skeleton[idx]
+            local part_a = check_data.character:FindFirstChild(connection_data[1])
+            local part_b = check_data.character:FindFirstChild(connection_data[2])
+
+            if part_a and part_b then
+                local screen_position_a = cache[part_a] or cframe_to_viewport(part_a.CFrame + (connection_data[3] or Vector3.new()), true)
+                local screen_position_b = cache[part_b] or cframe_to_viewport(part_b.CFrame + (connection_data[4] or Vector3.new()), true)
+
+                cache[part_a] = screen_position_a
+                cache[part_b] = screen_position_b
+
+                drawing.Visible = true
+                drawing.Color = color or esp.SkeletonColor
+                drawing.From = screen_position_a
+                drawing.To = screen_position_b
             end
         end
     end
@@ -325,16 +315,18 @@ function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
-        ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or  self.instance.Name},
+        ['name']     = { text = self.instance.DisplayName },
+        ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
     }
 end
 
-function player: (data) -- progress should be a number 0-1, you can get this by doing value / maxvalue
+function player:GetBarData(data) -- progress should be a number 0-1, you can get this by doing value / maxvalue aka armor / maxarmor
     return {
         ['health'] = { progress = data.healthfactor },
+        ['armor'] = { progress = data.armorfactor }
     }
 end
 
@@ -411,18 +403,12 @@ function player:SetVisible(bool)
         for i,v in next, self.drawings.skeleton do v.Visible = bool end
         for i,v in next, self.drawings.text do v[3].Visible = bool end
         for i,v in next, self.drawings.bar do v[3].Visible = bool; v[4].Visible = bool end
-
-        self.highlight.Enabled = bool
     end
 end
 
 -- // new player
-function esp.NewPlayer(player_instance, type)
+function esp.NewPlayer(player_instance)
     local player = setmetatable({}, player)
-
-    if type == "LocalPlayer" then
-        player.localplayer = true
-    end
 
     player.instance = player_instance
     player.priority = false
