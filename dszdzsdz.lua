@@ -413,12 +413,8 @@ function player:SetVisible(bool)
 end
 
 -- // new player
-function esp.NewPlayer(player_instance, playertype)
+function esp.NewPlayer(player_instance)
     local player = setmetatable({}, player)
-
-    if playertype == "LocalPlayer" then
-        player.localplayer = true
-    end
 
     player.instance = player_instance
     player.priority = false
