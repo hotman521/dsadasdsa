@@ -30,6 +30,7 @@ getgenv().esp = {
     ChamsOuterTransparency = 0.2,
 
     WallCheck = false,
+    AliveCheck = true,
     
     TextEnabled = true,
     UseDisplay = true,
@@ -173,7 +174,7 @@ function player:Check()
 
     local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
 
-    if not screen_visible or (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
+    if not screen_visible or (esp.AliveCheck and not ClientAlive(self.instance, character, humanoid)) or (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
         return false
     end
 
