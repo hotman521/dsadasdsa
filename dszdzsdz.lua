@@ -8,7 +8,7 @@ getgenv().esp = {
     CharacterOffset = CFrame.new(0, -0.25, 0),
     UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
 
-    PriorityColor = Color3.fromRGB(255, 255, 0),
+    PriorityColor = Color3.fromRGB(255, 0, 0),
     TargetColor = Color3.fromRGB(255, 0, 0),
     LocalPlayerColor = Color3.fromRGB(255, 0, 255),
 
@@ -31,6 +31,8 @@ getgenv().esp = {
 
     WallCheck = false,
     AliveCheck = true,
+    VisibleColor = Color3.fromRGB(0, 255, 0)
+    NonVisibleColor = Color3.fromRGB(255, 0, 0)
     
     TextEnabled = true,
     UseDisplay = true,
@@ -174,7 +176,7 @@ function player:Check()
 
     local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
 
-    if not screen_visible or (esp.AliveCheck and not ClientAlive(self.instance, character, humanoid)) or (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
+    if not screen_visible or (esp.AliveCheck and not ClientAlive(self.instance, character, humanoid)) then
         return false
     end
 
@@ -207,7 +209,7 @@ function player:Step(delta)
     
     local size = self:GetBoxSize(check_data.position, check_data.cframe)
     local position = vector2_floor(check_data.position - size / 2)
-    local color = self.priority and esp.PriorityColor
+    local color = (esp.WallCheck and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) and esp.NonVisibleColor or esp.VisibleColor
     local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
     local MaxDistance
