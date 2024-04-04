@@ -8,8 +8,9 @@ getgenv().esp = {
     CharacterOffset = CFrame.new(0, -0.25, 0),
     UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
 
+    HighlightTarget = true,
+
     PriorityColor = Color3.fromRGB(255, 0, 0),
-    TargetColor = Color3.fromRGB(255, 0, 0),
     LocalPlayerColor = Color3.fromRGB(255, 0, 255),
 
     BoxEnabled = true,
@@ -214,7 +215,6 @@ function player:Check()
         character = character,
         rootpart = rootpart,
         humanoid = humanoid,
-        bodyeffects = bodyeffects,
         position = screen_position,
         cframe = rootpart.CFrame * esp.CharacterOffset,
         health = humanoid.Health,
@@ -239,7 +239,7 @@ function player:Step(delta)
     
     local size = self:GetBoxSize(check_data.position, check_data.cframe)
     local position = vector2_floor(check_data.position - size / 2)
-    local color = esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor) or esp.BoxColor
+    local color = (esp.HighlightTarget and (self.priority and esp.PriorityColor)) or not self.priority and esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor) or esp.BoxColor
     local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
     local MaxDistance
@@ -562,7 +562,8 @@ function esp.NewPlayer(player_instance, type)
         for i,v in next, player.drawings.text do v[3]:Remove() end
         for i,v in next, player.drawings.bar do v[3]:Remove(); v[4]:Remove() end
 
-        player.highlight:Destroy()
+        player.highlight.Enabled = false
+        player.highlight.Parent = nil
     end
 
     for i = 1, 8 do
@@ -604,6 +605,34 @@ function esp.NewPlayer(player_instance, type)
     
     table.insert(players, player)
     return player
+end
+
+function esp.RemovePlayer(player_instance)
+    for i, v in pairs(players) do
+        local check_pass, check_data = v:Check()
+
+        if check_pass then
+            if check_data.character == player_instance.Character then
+                v.remove_esp()
+            end
+        end
+    end
+end
+
+function esp.UpdateTarget(player_instance)
+    for i, v in pairs(players) do
+        local check_pass, check_data = v:Check()
+
+        if check_pass then
+            if player_instance ~= nil then
+                if check_data.character == player_instance.Character then
+                    v.priority = true
+                end
+            else
+                v.priority = false
+            end
+        end
+    end
 end
 
 -- // update
