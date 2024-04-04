@@ -43,6 +43,7 @@ getgenv().esp = {
         ['health']   = { enabled = true, position = 'left', order = 1, bar = 'health' },
         ['tool']     = { enabled = true, position = 'bottom', suffix = '', prefix = '', order = 1 },
         ['distance'] = { enabled = false, position = 'bottom', suffix = 'st', order = 2 },
+        ['flags'] = { enabled = true, position = 'right', order = 2 },
     },
 
     BarLayout = {
@@ -96,6 +97,21 @@ function GetRootPart(Player, Character, Humanoid)
     return Humanoid.RootPart
 end
 
+function ClampString(String, Length, Font)
+    local Font = (Font or 2)
+    local Split = String:split("\n")
+    --
+    local Clamped = ""
+    --
+    for Index, Value2 in pairs(Split) do
+        if (Index * 13) <= Length then
+            Clamped = Clamped .. Value2 .. (Index == #Split and "" or "\n")
+        end
+    end
+    --
+    return (Clamped ~= String and (Clamped == "" and "" or Clamped:sub(0, #Clamped - 1) .. " ...") or Clamped)
+end
+
 function ValidateClient(Player)
     local Object = GetCharacter(Player)
     local Humanoid = (Object and GetHumanoid(Player, Object))
@@ -147,6 +163,20 @@ function RayCast(Part, Origin, Ignore, Distance)
     local Hit = Workspace:FindPartOnRayWithIgnoreList(Cast, Ignore)
     --
     return (Hit and Hit:IsDescendantOf(Part.Parent)) == true, Hit
+end
+
+function TableToString(Table)
+    if #Table > 1 then
+        local Text = ""
+        --
+        for Index, Value in pairs(Table) do
+            Text = Text .. Value .. "\n"
+        end
+        --
+        return Text:sub(0, #Text - 1)
+    else
+        return Table[1]
+    end
 end
 
 -- // drawing
@@ -392,12 +422,25 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
+    local CurrentFlags = {}
+    --
+    if data.rootpart.Velocity.Magnitude >= 5 then
+        Insert(CurrentFlags, "Moving")
+    end
+    --
+    if data.rootpart.Velocity.Y >= 5 then
+        Insert(CurrentFlags, "Jumping")
+    end
+    --
+    local Text = ClampString(TableToString(CurrentFlags), 50)
+    --
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
-        ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or  self.instance.Name},
+        ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or self.instance.Name},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
         ['distance'] = { text = tostring(math.floor(data.distance)) },
-        ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil }
+        ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil },
+        ['flags']     = { text = Text}
     }
 end
 
