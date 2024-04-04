@@ -432,7 +432,7 @@ function player:GetTextData(data)
         Insert(CurrentFlags, "Jumping")
     end
     --
-    local Text = ClampString(TableToString(CurrentFlags), 50)
+    local Text = "Moving"
     --
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
