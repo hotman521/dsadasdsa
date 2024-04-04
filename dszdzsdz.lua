@@ -383,7 +383,7 @@ function player:Step(delta)
                         layout.position == 'top' and Vector2.new(size.X / 2, -3 - (text_positions.top + 14)) or
                         layout.position == 'bottom' and Vector2.new(size.X / 2, size.Y + text_positions.bottom + 2) or
                         layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 2), text_positions.left - 3) or
-                        layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 6, text_positions.right - 3)               
+                        layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 4, text_positions.right - 3)               
                     )
         
                     text_positions[layout.position] += 14
@@ -430,6 +430,10 @@ function player:GetTextData(data)
     --
     if data.humanoid.MoveDirection.Magnitude == 0 then
         table.insert(CurrentFlags, "Standing")
+    end
+    --
+    if data.rootpart.Velocity.Y >= 5 then
+        table.insert(CurrentFlags, "Jumping")
     end
     --
     local Text = TableToString(CurrentFlags)
