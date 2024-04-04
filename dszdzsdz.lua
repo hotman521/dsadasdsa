@@ -383,7 +383,7 @@ function player:Step(delta)
                         layout.position == 'top' and Vector2.new(size.X / 2, -3 - (text_positions.top + 14)) or
                         layout.position == 'bottom' and Vector2.new(size.X / 2, size.Y + text_positions.bottom + 2) or
                         layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 2), text_positions.left - 3) or
-                        layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y + text_positions.right - 3)               
+                        layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, text_positions.right - 3)               
                     )
         
                     text_positions[layout.position] += 14
@@ -424,15 +424,19 @@ function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
     local CurrentFlags = {}
     --
-    if data.rootpart.Velocity.Magnitude >= 5 then
-        Insert(CurrentFlags, "Moving")
+    if data.humanoid.MoveDirection.Magnitude > 0 then
+        table.insert(CurrentFlags, "Moving")
     end
     --
-    if data.rootpart.Velocity.Y >= 5 then
-        Insert(CurrentFlags, "Jumping")
+    if data.humanoid.MoveDirection.Magnitude == 0 then
+        table.insert(CurrentFlags, "Standing")
     end
     --
-    local Text = "Moving"
+    data.humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
+        table.insert(CurrentFlags, "Jumping")
+    end)
+    --
+    local Text = TableToString(CurrentFlags)
     --
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
