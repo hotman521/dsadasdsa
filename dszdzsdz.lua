@@ -432,10 +432,6 @@ function player:GetTextData(data)
         table.insert(CurrentFlags, "Standing")
     end
     --
-    if data.rootpart.Velocity.Y >= 5 then
-        table.insert(CurrentFlags, "Jumping")
-    end)
-    --
     local Text = TableToString(CurrentFlags)
     --
     return {
