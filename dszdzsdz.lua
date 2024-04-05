@@ -323,14 +323,16 @@ function player:Step(delta)
             fill.Color = localplayercolor or color or esp.BoxFillColor
             fill.Transparency = esp.BoxFillTransparency
         end
-        
-        self.highlight.Enabled = esp.ChamsEnabled
-        self.highlight.FillColor = (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
-        self.highlight.FillTransparency = esp.ChamsInnerTransparency
-        self.highlight.OutlineColor = (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
-        self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
-        self.highlight.Parent = check_data.character
-        self.highlight.Adornee = check_data.character
+
+        if self.highlight then
+            self.highlight.Enabled = esp.ChamsEnabled
+            self.highlight.FillColor = (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
+            self.highlight.FillTransparency = esp.ChamsInnerTransparency
+            self.highlight.OutlineColor = (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
+            self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
+            self.highlight.Parent = check_data.character
+            self.highlight.Adornee = check_data.character
+        end
     
         local bar_data = self:GetBarData(check_data)
         local bar_positions = { top = 0, bottom = 0, left = 0, right = 0 }
