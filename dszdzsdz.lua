@@ -302,6 +302,7 @@ function player:Step(delta)
     
         elseif esp.BoxEnabled then
             local outline = box_drawings[1]
+            local outline2 = box_drawings[2]
             local inline = box_drawings[9]
             local fill = box_drawings[17]
     
@@ -309,6 +310,11 @@ function player:Step(delta)
             outline.Size = size + Vector2.new(2, 2)
             outline.Position = position
             outline.Filled = false
+
+            outline2.Visible = true
+            outline2.Size = size - Vector2.new(2, 2)
+            outline2.Position = position
+            outline2.Filled = false
     
             inline.Visible = true
             inline.Filled = false
