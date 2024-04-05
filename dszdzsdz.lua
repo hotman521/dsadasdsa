@@ -4,9 +4,9 @@ getgenv().esp = {
     MaxDistanceAmount = 100,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
-    CharacterSize = Vector3.new(4, 5.75, 1.5),
+    CharacterSize = Vector3.new(5, 5.75, 1.5),
     CharacterOffset = CFrame.new(0, -0.25, 0),
-    UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
+    UseBoundingBox = false, -- will use bounding box instead of size preset for dynamic box
 
     HighlightTarget = true,
 
@@ -243,7 +243,7 @@ function player:Step(delta)
     
     local size = self:GetBoxSize(check_data.position, check_data.cframe)
     local position = vector2_floor(check_data.position - size / 2)
-    local color = (esp.HighlightTarget and (self.priority and esp.PriorityColor)) or not self.priority and esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor) or esp.BoxColor
+    local color = (esp.HighlightTarget and (self.priority and esp.PriorityColor)) or not self.priority and esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor)
     local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
     local MaxDistance
