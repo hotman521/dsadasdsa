@@ -282,8 +282,8 @@ function player:Step(delta)
 
                 fill.Visible = esp.BoxFill
                 fill.Filled = true
-                fill.Size = size
-                fill.Position = position
+                fill.Size = size - Vector2.new(3, 3)
+                fill.Position = position + Vector2.new(1.5, 1.5)
                 fill.Color = localplayercolor or color or esp.BoxFillColor
                 fill.Transparency = esp.BoxFillTransparency
     
