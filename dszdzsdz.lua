@@ -324,15 +324,13 @@ function player:Step(delta)
             fill.Transparency = esp.BoxFillTransparency
         end
 
-        if self.highlight then
-            self.highlight.Enabled = esp.ChamsEnabled
-            self.highlight.FillColor = (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
-            self.highlight.FillTransparency = esp.ChamsInnerTransparency
-            self.highlight.OutlineColor = (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
-            self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
-            self.highlight.Parent = check_data.character
-            self.highlight.Adornee = check_data.character
-        end
+        self.highlight.Enabled = esp.ChamsEnabled
+        self.highlight.FillColor = (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
+        self.highlight.FillTransparency = esp.ChamsInnerTransparency
+        self.highlight.OutlineColor = (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
+        self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
+        self.highlight.Parent = check_data.character
+        self.highlight.Adornee = check_data.character
     
         local bar_data = self:GetBarData(check_data)
         local bar_positions = { top = 0, bottom = 0, left = 0, right = 0 }
@@ -584,7 +582,7 @@ function esp.NewPlayer(player_instance, type)
         for i,v in next, player.drawings.text do v[3]:Remove() end
         for i,v in next, player.drawings.bar do v[3]:Remove(); v[4]:Remove() end
 
-        player.highlight:Destroy()
+        player.highlight.Enabled = false
     end
 
     for i = 1, 8 do
