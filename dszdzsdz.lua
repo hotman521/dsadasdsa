@@ -307,7 +307,7 @@ function player:Step(delta)
     
             outline.Visible = true
             outline.Size = size + Vector2.new(2, 0)
-            outline.Position = position
+            outline.Position = position - Vector2.new(1, 0)
             outline.Filled = false
     
             inline.Visible = true
