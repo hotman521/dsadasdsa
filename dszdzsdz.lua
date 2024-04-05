@@ -19,6 +19,10 @@ getgenv().esp = {
     BoxStaticXFactor = 1.3,
     BoxStaticYFactor = 2.1,
     BoxColor = Color3.fromRGB(255, 255, 255),
+
+    BoxFill = false,
+    BoxFillColor = Color3.fromRGB(0, 255, 0),
+    BoxFillTransparency = 0.8,
     
     SkeletonEnabled = true,
     SkeletonColor = Color3.fromRGB(255, 255, 255),
@@ -268,12 +272,20 @@ function player:Step(delta)
             for i = 1, 8 do
                 local outline = box_drawings[i]
                 local inline = box_drawings[i + 8]
+                local fill = box_drawings[17]
     
                 inline.Visible = true
                 outline.Visible = true
                 inline.Filled = true
                 outline.Filled = true
                 inline.Color = localplayercolor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
+
+                fill.Visible = esp.BoxFill
+                fill.Filled = true
+                fill.Size = size
+                fill.Position = position
+                fill.Color = localplayercolor or color or esp.BoxFillColor
+                fill.Transparency = esp.BoxFillTransparency
     
                 outline.Position = inline.Position - Vector2.new(1, 1)
                 
@@ -291,10 +303,11 @@ function player:Step(delta)
         elseif esp.BoxEnabled then
             local outline = box_drawings[1]
             local inline = box_drawings[9]
+            local fill = box_drawings[17]
     
             outline.Visible = true
-            outline.Size = size
-            outline.Position = position
+            outline.Size = size + Vector2.new(4, 0)
+            outline.Position = position - Vector2.new(2, 0)
             outline.Filled = false
     
             inline.Visible = true
@@ -302,6 +315,13 @@ function player:Step(delta)
             inline.Size = size
             inline.Position = position
             inline.Color = localplayercolor or color or (self.useboxcolor and self.boxcolor) or esp.BoxColor
+
+            fill.Visible = esp.BoxFill
+            fill.Filled = true
+            fill.Size = size
+            fill.Position = position
+            fill.Color = localplayercolor or color or esp.BoxFillColor
+            fill.Transparency = esp.BoxFillTransparency
         end
         
         self.highlight.Enabled = esp.ChamsEnabled
@@ -573,6 +593,8 @@ function esp.NewPlayer(player_instance, type)
     for i = 9, 16 do
         player.drawings.box[i] = Drawing.new('Square')
     end
+
+    player.drawings.box[17] = Drawing.new('Square')
 
     for i = 1, 10 do
         player.drawings.skeleton[i] = Drawing.new('Line', { Thickness = 1 })
