@@ -306,8 +306,8 @@ function player:Step(delta)
             local fill = box_drawings[17]
     
             outline.Visible = true
-            outline.Size = size + Vector2.new(2, 0)
-            outline.Position = position - Vector2.new(1, 0)
+            outline.Size = size + Vector2.new(4, 4)
+            outline.Position = position - Vector2.new(2, 2)
             outline.Filled = false
     
             inline.Visible = true
