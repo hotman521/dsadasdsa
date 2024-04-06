@@ -16,7 +16,7 @@ getgenv().esp = {
     BoxEnabled = true,
     BoxCorners = true,
     BoxDynamic = false,
-    BoxStaticXFactor = 3,
+    BoxStaticXFactor = 1.5,
     BoxStaticYFactor = 2.1,
     BoxColor = Color3.fromRGB(255, 255, 255),
 
