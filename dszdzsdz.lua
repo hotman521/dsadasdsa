@@ -55,8 +55,8 @@ getgenv().esp = {
         ['nametag']  = { enabled = true, position = 'top', order = 1 },
         ['name']     = { enabled = true, position = 'top', order = 2 },
         ['health']   = { enabled = true, position = 'left', order = 1, bar = 'health' },
-        ['tool']     = { enabled = true, position = 'bottom', suffix = '', prefix = '', order = 1 },
-        ['distance'] = { enabled = false, position = 'bottom', suffix = 'st', order = 2 },
+        ['tool']     = { enabled = true, position = 'bottom', suffix = '', prefix = '', order = 2 },
+        ['distance'] = { enabled = false, position = 'bottom', suffix = 'st', order = 1 },
         ['flags'] = { enabled = true, position = 'right', order = 2 },
     },
 
