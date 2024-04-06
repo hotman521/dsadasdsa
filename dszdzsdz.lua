@@ -74,14 +74,6 @@ getgenv().esp = {
     
 }
 
-local library = {
-    folders = {
-        main = "LuckyHub",
-        assets = "LuckyHub/Images",
-        configs = "LuckyHub/Configs"
-    },
-}
-
 -- // variables
 local runservice = game:GetService('RunService')
 local camera = workspace.CurrentCamera
@@ -124,6 +116,19 @@ function cframe_to_viewport(cframe, floor)
     return position, visible
 end
 
+function IsUsingAntiAim(Player)
+    if (Player.Character.HumanoidRootPart.Velocity.Y < -5 and Player.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Freefall) or Player.Character.HumanoidRootPart.Velocity.Y < -50 then
+        return true
+    elseif Player and (Player.Character.HumanoidRootPart.Velocity.X > 35 or Player.Character.HumanoidRootPart.Velocity.X < -35) then
+        return true
+    elseif Player and Player.Character.HumanoidRootPart.Velocity.Y > 60 then
+        return true
+    elseif Player and (Player.Character.HumanoidRootPart.Velocity.Z > 35 or Player.Character.HumanoidRootPart.Velocity.Z < -35) then
+        return true
+    else
+        return false
+    end
+end
 
 function GetCharacter(Player)
     return Player.Character
@@ -274,6 +279,7 @@ function player:Check()
     local screen_position, screen_visible = cframe_to_viewport(rootpart.CFrame * esp.CharacterOffset, true)
 
     return true, {
+        player = self.instance,
         character = character,
         rootpart = rootpart,
         humanoid = humanoid,
@@ -302,7 +308,7 @@ function player:Step(delta)
         self.visible = true
     end
 
-    local screen_position, screen_visible = cframe_to_viewport(check_data.rootpart.CFrame * esp.CharacterOffset, true)
+    local screen_position, screen_visible = cframe_to_viewport(check_data.cframe, true)
     local size
     local position
     local color = (esp.HighlightTarget and (self.priority and esp.PriorityColor)) or not self.priority and esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor)
@@ -539,7 +545,7 @@ function player:Step(delta)
                         drawing.Position = position + (
                             layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 4), size.Y - bar_data[layout.bar].progress * size.Y - 3) or
                             layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y - bar_data[layout.bar].progress * size.Y -3) or
-                            layout.position == 'bottom' and Vector2.new(size.X + 10, size.Y - 2)
+                            layout.position == 'bottom' and Vector2.new(size.X + 10, size.Y - 3)
                         )
                     else
                         drawing.Position = position + (
@@ -559,7 +565,9 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
+    local screen_position, screen_visible = cframe_to_viewport(data.cframe, true)
     local Size = self:GetBoxSize(data.position, data.cframe)
+    local Text
     local CurrentFlags = {}
     --
     if data.humanoid.MoveDirection.Magnitude > 0 then
@@ -574,9 +582,15 @@ function player:GetTextData(data)
         table.insert(CurrentFlags, "Jumping")
     end
     --
-
+    if IsUsingAntiAim(data.player) then
+        table.insert(CurrentFlags, "Desynced")
+    end
     --
-    local Text = ClampString(TableToString(CurrentFlags), Size.Y)
+    if screen_visible then
+        Text = ClampString(TableToString(CurrentFlags), Size.Y)
+    else
+        Text = ClampString(TableToString(CurrentFlags), 20)
+    end
     --
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
