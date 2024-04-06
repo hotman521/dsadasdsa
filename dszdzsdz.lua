@@ -4,7 +4,7 @@ getgenv().esp = {
     MaxDistanceAmount = 100,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
-    CharacterSize = Vector3.new(10, 10.75, 10.5),
+    CharacterSize = Vector3.new(4, 5.75, 1.5),
     CharacterOffset = CFrame.new(0, -0.25, 0),
     UseBoundingBox = false, -- will use bounding box instead of size preset for dynamic box
 
@@ -16,7 +16,7 @@ getgenv().esp = {
     BoxEnabled = true,
     BoxCorners = true,
     BoxDynamic = false,
-    BoxStaticXFactor = 1.3,
+    BoxStaticXFactor = 3,
     BoxStaticYFactor = 2.1,
     BoxColor = Color3.fromRGB(255, 255, 255),
 
