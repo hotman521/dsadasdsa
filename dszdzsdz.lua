@@ -35,6 +35,7 @@ getgenv().esp = {
     ChamsOuterTransparency = 0.2,
 
     OutOfViewArrows = true,
+    OutOfViewArrowColor = Color3.fromRGB(0, 255, 0).
 
     WallCheck = false,
     AliveCheck = true,
@@ -332,7 +333,7 @@ function player:Step(delta)
             self.drawings.arrows.PointC = PointC
             self.drawings.arrows.Visible = true
             self.drawings.arrows.Filled = true
-            self.drawings.arrows.Color = Color3.fromRGB(0, 255, 0)
+            self.drawings.arrows.Color = esp.OutOfViewArrowColor
             self.drawings.arrows.Transparency = 0.6
 
             for i,v in next, box_drawings do 
