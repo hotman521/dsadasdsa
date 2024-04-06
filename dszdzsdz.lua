@@ -37,7 +37,7 @@ getgenv().esp = {
     OutOfViewArrows = true,
     OutOfViewArrowColor = Color3.fromRGB(0, 255, 0),
     OutOfViewArrowFilled = true,
-    OutOfViewArrowTransparency = 0.7
+    OutOfViewArrowTransparency = 0.7,
 
     WallCheck = false,
     AliveCheck = true,
@@ -311,42 +311,44 @@ function player:Step(delta)
 
     if not screen_visible then
         if MaxDistance > check_data.distance then
-            local ArrowSize = 20
-            local ArrowPosition = 25
-            local Relative = Workspace.CurrentCamera.CFrame:PointToObjectSpace(check_data.rootpart.CFrame.Position)
-            local Angle = Atan2(-Relative.y, Relative.x)
-            local Direction = Vector2.new(Cos(Angle), Sin(Angle))
-            local Position = ArrowPosition ~= 101 and (Direction * Workspace.CurrentCamera.ViewportSize.X * ArrowPosition / 200) + (Workspace.CurrentCamera.ViewportSize * 0.5)
-
-            if not Position or Position.y > Workspace.CurrentCamera.ViewportSize.Y - 5 or Position.Y < 5 then
-                Position = AngleEdge(Angle, 5)
+            if esp.OutOfViewArrows then
+                local ArrowSize = 20
+                local ArrowPosition = 25
+                local Relative = Workspace.CurrentCamera.CFrame:PointToObjectSpace(check_data.rootpart.CFrame.Position)
+                local Angle = Atan2(-Relative.y, Relative.x)
+                local Direction = Vector2.new(Cos(Angle), Sin(Angle))
+                local Position = ArrowPosition ~= 101 and (Direction * Workspace.CurrentCamera.ViewportSize.X * ArrowPosition / 200) + (Workspace.CurrentCamera.ViewportSize * 0.5)
+    
+                if not Position or Position.y > Workspace.CurrentCamera.ViewportSize.Y - 5 or Position.Y < 5 then
+                    Position = AngleEdge(Angle, 5)
+                end
+    
+                local PointA = Position
+                local PointB = (Position - RotatePoint(Direction, 0.5) * ArrowSize)
+                local PointC = (Position - RotatePoint(Direction, -0.5) * ArrowSize)
+                local PointD = Vector2.new((PointA.X + PointB.X + PointC.X) / 3, (PointA.Y + PointB.Y + PointC.Y) / 3)
+    
+                size = Vector2.new(ArrowSize, ArrowSize)
+                position = (PointD - Vector2.new((ArrowSize / 2), (ArrowSize / 2)))
+    
+                self.drawings.arrows.PointA = PointA
+                self.drawings.arrows.PointB = PointB
+                self.drawings.arrows.PointC = PointC
+                self.drawings.arrows.Visible = true
+                self.drawings.arrows.Filled = esp.OutOfViewArrowFilled
+                self.drawings.arrows.Color = esp.OutOfViewArrowColor
+                self.drawings.arrows.Transparency = esp.OutOfViewArrowTransparency
+    
+                for i,v in next, box_drawings do 
+                    v.Visible = false 
+                end
+                
+                for i,v in next, self.drawings.skeleton do 
+                    v.Visible = false 
+                end
+                
+                self.highlight.Enabled = false
             end
-
-            local PointA = Position
-            local PointB = (Position - RotatePoint(Direction, 0.5) * ArrowSize)
-            local PointC = (Position - RotatePoint(Direction, -0.5) * ArrowSize)
-            local PointD = Vector2.new((PointA.X + PointB.X + PointC.X) / 3, (PointA.Y + PointB.Y + PointC.Y) / 3)
-
-            size = Vector2.new(ArrowSize, ArrowSize)
-            position = (PointD - Vector2.new((ArrowSize / 2), (ArrowSize / 2)))
-
-            self.drawings.arrows.PointA = PointA
-            self.drawings.arrows.PointB = PointB
-            self.drawings.arrows.PointC = PointC
-            self.drawings.arrows.Visible = true
-            self.drawings.arrows.Filled = esp.OutOfViewArrowFilled
-            self.drawings.arrows.Color = esp.OutOfViewArrowColor
-            self.drawings.arrows.Transparency = esp.OutOfViewArrowTransparency
-
-            for i,v in next, box_drawings do 
-                v.Visible = false 
-            end
-            
-            for i,v in next, self.drawings.skeleton do 
-                v.Visible = false 
-            end
-            
-            self.highlight.Enabled = false
         end
     else
         self.drawings.arrows.Visible = false
