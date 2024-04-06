@@ -35,7 +35,7 @@ getgenv().esp = {
     ChamsOuterTransparency = 0.2,
 
     OutOfViewArrows = true,
-    OutOfViewArrowColor = Color3.fromRGB(0, 255, 0).
+    OutOfViewArrowColor = Color3.fromRGB(0, 255, 0),
 
     WallCheck = false,
     AliveCheck = true,
