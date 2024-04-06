@@ -367,9 +367,9 @@ function player:Step(delta)
         end
 
         self.highlight.Enabled = esp.ChamsEnabled
-        self.highlight.FillColor = (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
+        self.highlight.FillColor = color or (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
         self.highlight.FillTransparency = esp.ChamsInnerTransparency
-        self.highlight.OutlineColor = (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
+        self.highlight.OutlineColor = color or (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
         self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
         self.highlight.Parent = check_data.character
         self.highlight.Adornee = check_data.character
