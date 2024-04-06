@@ -38,6 +38,15 @@ getgenv().esp = {
     AliveCheck = true,
     VisibleColor = Color3.fromRGB(0, 255, 0),
     NonVisibleColor = Color3.fromRGB(255, 0, 0),
+
+    Icons = true,
+    IconsLayout = {
+        ['[Revolver]'] = {enabled = true, position = 'bottom', Image = "https://i.imgur.com/5JiCOj2.png" },
+        ['[Double-Barrel SG]'] = {enabled = true, position = 'bottom', Image = "https://i.imgur.com/f5g7txh.png" },
+        ['[Tactical]'] = {enabled = true, position = 'bottom', Image = "https://i.imgur.com/Z6ZJ6ks.png" },
+        ['[Shotgun]'] = {enabled = true, position = 'bottom', Image = "https://i.imgur.com/hcXF7Wi.png" },
+        ['[Knife]'] = {enabled = true, position = 'bottom', Image = "https://i.imgur.com/cU5bbdg.png" },
+    },
     
     TextEnabled = true,
     UseDisplay = true,
@@ -55,6 +64,14 @@ getgenv().esp = {
         ['health'] = { enabled = true, position = 'left', order = 1, color_empty = Color3.fromRGB(176, 84, 84), color_full = Color3.fromRGB(140, 250, 140) },
     }
     
+}
+
+local library = {
+    folders = {
+        main = "LuckyHub",
+        assets = "LuckyHub/Images",
+        configs = "LuckyHub/Configs"
+    },
 }
 
 -- // variables
@@ -169,6 +186,25 @@ function RayCast(Part, Origin, Ignore, Distance)
     --
     return (Hit and Hit:IsDescendantOf(Part.Parent)) == true, Hit
 end
+
+function LoadImage(instance, imageName, imageLink)
+        local data
+        --
+        if isfile(library.folders.assets.."/"..imageName..".png") then
+            data = readfile(library.folders.assets.."/"..imageName..".png")
+        else
+            if imageLink then
+                data = game:HttpGet(imageLink)
+                writefile(library.folders.assets.."/"..imageName..".png", data)
+            else
+                return
+            end
+        end
+        --
+        if data and instance then
+            instance.Data = data
+        end
+    end
 
 function TableToString(Table)
     if #Table > 1 then
@@ -378,7 +414,7 @@ function player:Step(delta)
             bar_positions[layout.position] += 4
     
         end
-    
+        
         if esp.TextEnabled then
             local text_data = self:GetTextData(check_data)
             local text_positions = { top = bar_positions.top, bottom = bar_positions.bottom, left = 0, right = 0 }
@@ -471,6 +507,12 @@ function player:GetTextData(data)
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil },
         ['flags']     = { text = Text}
+    }
+end
+
+function player:GetIconData(data)
+    return {
+        ['[Knife]'] = { data = "https://i.imgur.com/cU5bbdg.png" }
     }
 end
 
