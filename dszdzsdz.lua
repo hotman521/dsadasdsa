@@ -107,6 +107,20 @@ function cframe_to_viewport(cframe, floor)
     return position, visible
 end
 
+function IsUsingAntiAim(Player)
+    if (Player.Character.HumanoidRootPart.Velocity.Y < -5 and Player.Character.Humanoid:GetState() ~= Enum.HumanoidStateType.Freefall) or Player.Character.HumanoidRootPart.Velocity.Y < -50 then
+        return true
+    elseif Player and (Player.Character.HumanoidRootPart.Velocity.X > 35 or Player.Character.HumanoidRootPart.Velocity.X < -35) then
+        return true
+    elseif Player and Player.Character.HumanoidRootPart.Velocity.Y > 60 then
+        return true
+    elseif Player and (Player.Character.HumanoidRootPart.Velocity.Z > 35 or Player.Character.HumanoidRootPart.Velocity.Z < -35) then
+        return true
+    else
+        return false
+    end
+end
+
 function GetCharacter(Player)
     return Player.Character
 end
@@ -187,25 +201,6 @@ function RayCast(Part, Origin, Ignore, Distance)
     return (Hit and Hit:IsDescendantOf(Part.Parent)) == true, Hit
 end
 
-function LoadImage(instance, imageName, imageLink)
-        local data
-        --
-        if isfile(library.folders.assets.."/"..imageName..".png") then
-            data = readfile(library.folders.assets.."/"..imageName..".png")
-        else
-            if imageLink then
-                data = game:HttpGet(imageLink)
-                writefile(library.folders.assets.."/"..imageName..".png", data)
-            else
-                return
-            end
-        end
-        --
-        if data and instance then
-            instance.Data = data
-        end
-    end
-
 function TableToString(Table)
     if #Table > 1 then
         local Text = ""
@@ -252,6 +247,7 @@ function player:Check()
     end
 
     return true, {
+        player = self.instance,
         character = character,
         rootpart = rootpart,
         humanoid = humanoid,
@@ -366,13 +362,15 @@ function player:Step(delta)
             fill.Transparency = esp.BoxFillTransparency
         end
 
-        self.highlight.Enabled = esp.ChamsEnabled
-        self.highlight.FillColor = color or (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
-        self.highlight.FillTransparency = esp.ChamsInnerTransparency
-        self.highlight.OutlineColor = color or (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
-        self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
-        self.highlight.Parent = check_data.character
-        self.highlight.Adornee = check_data.character
+        if not self.localplayer then
+            self.highlight.Enabled = esp.ChamsEnabled
+            self.highlight.FillColor = color or (self.usehighlightcolor and self.highlightcolor) or esp.ChamsInnerColor
+            self.highlight.FillTransparency = esp.ChamsInnerTransparency
+            self.highlight.OutlineColor = color or (self.usehighlightcolor and self.outlinehighlightcolor) or esp.ChamsOuterColor
+            self.highlight.OutlineTransparency = esp.ChamsOuterTransparency
+            self.highlight.Parent = check_data.character
+            self.highlight.Adornee = check_data.character
+        end
     
         local bar_data = self:GetBarData(check_data)
         local bar_positions = { top = 0, bottom = 0, left = 0, right = 0 }
@@ -484,6 +482,7 @@ end
 
 function player:GetTextData(data)
     local tool = data.character:FindFirstChildOfClass('Tool')
+    local Size = self:GetBoxSize(data.position, data.cframe)
     local CurrentFlags = {}
     --
     if data.humanoid.MoveDirection.Magnitude > 0 then
@@ -498,7 +497,11 @@ function player:GetTextData(data)
         table.insert(CurrentFlags, "Jumping")
     end
     --
-    local Text = TableToString(CurrentFlags)
+    if IsUsingAntiAim(data.player) then
+        table.insert(CurrentFlags, "Desynced")
+    end
+    --
+    local Text = ClampString(TableToString(CurrentFlags), Size.Y)
     --
     return {
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
@@ -629,8 +632,6 @@ function esp.NewPlayer(player_instance, type)
         for i,v in next, player.drawings.skeleton do v:Remove() end
         for i,v in next, player.drawings.text do v[3]:Remove() end
         for i,v in next, player.drawings.bar do v[3]:Remove(); v[4]:Remove() end
-
-        player.highlight.Enabled = false
     end
 
     for i = 1, 8 do
