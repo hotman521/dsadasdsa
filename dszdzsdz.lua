@@ -61,13 +61,15 @@ getgenv().esp = {
         ['nametag']  = { enabled = true, position = 'top', order = 1 },
         ['name']     = { enabled = true, position = 'top', order = 2 },
         ['health']   = { enabled = true, position = 'left', order = 1, bar = 'health' },
+        ['armor']    = { enabled = true, position = 'bottom', order = 2, bar = 'armor' },
         ['tool']     = { enabled = true, position = 'bottom', suffix = '', prefix = '', order = 2 },
-        ['distance'] = { enabled = false, position = 'bottom', suffix = 'st', order = 1 },
+        ['distance'] = { enabled = true, position = 'bottom', suffix = 'st', order = 1 },
         ['flags'] = { enabled = true, position = 'right', order = 2 },
     },
 
     BarLayout = {
         ['health'] = { enabled = true, position = 'left', order = 1, color_empty = Color3.fromRGB(176, 84, 84), color_full = Color3.fromRGB(140, 250, 140) },
+        ['armor']  = { enabled = true, position = 'bottom', order = 2, color_empty = Color3.fromRGB(0, 136, 194), color_full = Color3.fromRGB(0, 136, 194) }
     }
     
 }
@@ -262,6 +264,8 @@ function player:Check()
     local rootpart = character and character:FindFirstChild('HumanoidRootPart')
     local torso = character and character:FindFirstChild('UpperTorso')
     local humanoid = rootpart and character:FindFirstChild('Humanoid')
+    local bodyeffects = character and character:FindFirstChild('BodyEffects')
+    local armor = bodyeffects and bodyeffects:FindFirstChild('Armor')
 
     if not character or not rootpart or not humanoid or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
         return false
@@ -273,11 +277,14 @@ function player:Check()
         character = character,
         rootpart = rootpart,
         humanoid = humanoid,
+        bodyeffects = bodyeffects,
+        armor = armor,
         position = screen_position,
         cframe = rootpart.CFrame * esp.CharacterOffset,
         health = humanoid.Health,
         maxhealth = humanoid.MaxHealth,
         healthfactor = humanoid.Health / humanoid.MaxHealth,
+        armorfactor = armor ~= nil and armor.Value / 200,
         distance = (rootpart.CFrame.p - camera.CFrame.p).magnitude
     }
     
@@ -532,8 +539,7 @@ function player:Step(delta)
                         drawing.Position = position + (
                             layout.position == 'left' and Vector2.new(-(bar_positions.left + drawing.TextBounds.X + 4), size.Y - bar_data[layout.bar].progress * size.Y - 3) or
                             layout.position == 'right' and Vector2.new(size.X + bar_positions.right + 2, size.Y - bar_data[layout.bar].progress * size.Y -3) or
-                            layout.position == 'bottom' and Vector2.new(size.X / 2, size.Y + text_positions.bottom + 2) or 
-                            layout.position == 'top' and Vector2.new(size.X / 2, -3 - (text_positions.top + 14))
+                            layout.position == 'bottom' and Vector2.new(size.X + 10, size.Y - 2)
                         )
                     else
                         drawing.Position = position + (
@@ -576,6 +582,7 @@ function player:GetTextData(data)
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
         ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or self.instance.Name},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
+        ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil },
         ['flags']    = { text = Text }
@@ -588,9 +595,10 @@ function player:GetIconData(data)
     }
 end
 
-function player:GetBarData(data) -- progress should be a number 0-1, you can get this by doing value / maxvalue
+function player:GetBarData(data) -- progress should be a number 0-1, you can get this by doing value / maxvalue aka armor / maxarmor
     return {
         ['health'] = { progress = data.healthfactor },
+        ['armor'] = { progress = data.armorfactor }
     }
 end
 
