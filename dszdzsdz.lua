@@ -272,7 +272,7 @@ function player:Check()
     local bodyeffects = character and character:FindFirstChild('BodyEffects')
     local armor = bodyeffects and bodyeffects:FindFirstChild('Armor')
 
-    if not character or not rootpart or not humanoid or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
+    if not character or not rootpart or not humanoid or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not self.localplayer and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
         return false
     end
 
