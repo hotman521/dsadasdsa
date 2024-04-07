@@ -9,8 +9,10 @@ getgenv().esp = {
     UseBoundingBox = false, -- will use bounding box instead of size preset for dynamic box
 
     HighlightTarget = true,
+    HighlightFriends = true,
 
     PriorityColor = Color3.fromRGB(255, 0, 0),
+    FriendsColor = Color3.fromRGB(0, 255, 0),
     LocalPlayerColor = Color3.fromRGB(255, 0, 255),
 
     BoxEnabled = true,
@@ -224,6 +226,14 @@ function TableToString(Table)
     end
 end
 
+function CheckFriend(Player)
+    if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+        return false;
+    else
+        return true;
+    end
+end
+
 function AngleEdge(Angle, Inset)
         local ScreenSize = Workspace.CurrentCamera.ViewportSize
         local Sine = Sin(Angle)
@@ -311,7 +321,7 @@ function player:Step(delta)
     local screen_position, screen_visible = cframe_to_viewport(check_data.cframe, true)
     local size
     local position
-    local color = (esp.HighlightTarget and (self.priority and esp.PriorityColor)) or not self.priority and esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor)
+    local color = (esp.HighlightFriends and (not CheckFriend(check_data.player) and esp.FriendsColor)) or (esp.HighlightTarget and (self.priority and esp.PriorityColor)) or not self.priority  and esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor)
     local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
     local MaxDistance
