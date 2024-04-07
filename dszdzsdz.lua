@@ -359,7 +359,7 @@ function player:Step(delta)
                 self.drawings.arrows.PointC = PointC
                 self.drawings.arrows.Visible = true
                 self.drawings.arrows.Filled = esp.OutOfViewArrowFilled
-                self.drawings.arrows.Color = esp.OutOfViewArrowColor
+                self.drawings.arrows.Color = color or esp.OutOfViewArrowColor
                 self.drawings.arrows.Transparency = esp.OutOfViewArrowTransparency
     
                 for i,v in next, box_drawings do 
