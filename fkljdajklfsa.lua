@@ -42,6 +42,7 @@ getgenv().esp = {
     OutOfViewArrowTransparency = 0.7,
 
     WallCheck = false,
+    TeamCheck = false,
     AliveCheck = true,
     VisibleOnly = false,
     VisibleColor = Color3.fromRGB(0, 255, 0),
@@ -278,7 +279,7 @@ function player:Check()
     local torso = character and character:FindFirstChild('UpperTorso')
     local humanoid = rootpart and character:FindFirstChild('Humanoid')
 
-    if not character or not rootpart or not humanoid or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not self.localplayer and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
+    if not character or not rootpart or not humanoid or (esp.TeamCheck and (self.instance.Team ~= nil and game.Players.LocalPlayer.Team ~= nil) and self.instance.Team == game.Players.LocalPlayer.Team) or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not self.localplayer and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
         return false
     end
 
