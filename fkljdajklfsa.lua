@@ -591,6 +591,10 @@ function player:GetTextData(data)
         table.insert(CurrentFlags, "Desynced")
     end
     --
+    if self.priority then
+        table.insert(CurrentFlags, "Target")
+    end
+    --
     if screen_visible then
         Text = ClampString(TableToString(CurrentFlags), Size.Y)
     else
