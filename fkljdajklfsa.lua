@@ -1,6 +1,6 @@
-wgetgenv().esp = {
+getgenv().esp = {
     Enabled = false,
-    MaxDistance = true,
+    TargetOnly = false,
     MaxDistanceAmount = 100,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
