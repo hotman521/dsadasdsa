@@ -802,7 +802,7 @@ function esp.UpdateTarget(player_instance)
 end
 
 -- // update
-game:GetService('RunService').PostSimulation:Connect(function(delta)
+RunService.PreRender:Connect(function(delta)
     if esp.AutoStep then
         for i, player in next, players do
             player:Step(delta)
