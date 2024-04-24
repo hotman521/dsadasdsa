@@ -598,6 +598,10 @@ function player:GetTextData(data)
         table.insert(CurrentFlags, "Desynced")
     end
     --
+    if self.priority then
+        table.insert(CurrentFlags, "Target")
+    end
+    --
     if screen_visible then
         Text = ClampString(TableToString(CurrentFlags), Size.Y)
     else
@@ -608,7 +612,6 @@ function player:GetTextData(data)
         ['nametag']  = { text = self.nametag_text, enabled = self.nametag_enabled, color = self.nametag_color },
         ['name']     = { text = esp.UseDisplay and self.instance.DisplayName or self.instance.Name},
         ['health']   = { text = tostring(math.floor(data.health)), color = esp.BarLayout.health.color_empty:lerp(esp.BarLayout.health.color_full, data.healthfactor) },
-        ['armor']    = { text = tostring(math.floor(data.armor.Value)), color = esp.BarLayout.armor.color_empty:lerp(esp.BarLayout.armor.color_full, data.armorfactor)},
         ['distance'] = { text = tostring(math.floor(data.distance)) },
         ['tool']     = { text = tool and tool.Name, enabled = tool ~= nil },
         ['flags']    = { text = Text }
