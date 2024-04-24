@@ -335,7 +335,7 @@ function player:Step(delta)
 
     if not screen_visible then
         if MaxDistance > check_data.distance then
-            if esp.OutOfViewArrows then
+            if esp.OutOfViewArrows and check_data.player ~= game.Players.LocalPlayer then
                 local ArrowSize = 20
                 local ArrowPosition = 25
                 local Relative = Workspace.CurrentCamera.CFrame:PointToObjectSpace(check_data.rootpart.CFrame.Position)
@@ -811,7 +811,7 @@ function esp.UpdateTarget(player_instance)
 end
 
 -- // update
-game:GetService('RunService').PostSimulation:Connect(function(delta)
+RunService.PreRender:Connect(function(delta)
     if esp.AutoStep then
         for i, player in next, players do
             player:Step(delta)
