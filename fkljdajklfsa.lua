@@ -1,4 +1,4 @@
-getgenv().esp = {
+wgetgenv().esp = {
     Enabled = false,
     MaxDistance = true,
     MaxDistanceAmount = 100,
@@ -328,7 +328,7 @@ function player:Step(delta)
 
     if not screen_visible then
         if MaxDistance > check_data.distance then
-            if esp.OutOfViewArrows then
+            if esp.OutOfViewArrows and check_data.player ~= game.Players.LocalPlayer then
                 local ArrowSize = 20
                 local ArrowPosition = 25
                 local Relative = Workspace.CurrentCamera.CFrame:PointToObjectSpace(check_data.rootpart.CFrame.Position)
