@@ -314,7 +314,7 @@ function player:Step(delta)
 
     self:SetVisible(false)
 
-    if not check_pass or esp.Enabled == false or (esp.TargetOnly and not self.priority) then
+    if not check_pass or esp.Enabled == false or (esp.TargetOnly and not (self.priority or self.localplayer)) then
         return
     else
         self.visible = true
