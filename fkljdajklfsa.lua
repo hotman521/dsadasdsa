@@ -1,6 +1,7 @@
 getgenv().esp = {
     Enabled = false,
     TargetOnly = false,
+    MaxDistance = true,
     MaxDistanceAmount = 100,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
@@ -306,7 +307,7 @@ function player:Step(delta)
 
     self:SetVisible(false)
 
-    if not check_pass or esp.Enabled == false then
+    if not check_pass or esp.Enabled == false or (esp.TargetOnly and not self.priority) then
         return
     else
         self.visible = true
