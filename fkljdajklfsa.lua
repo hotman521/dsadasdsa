@@ -726,6 +726,7 @@ function esp.NewPlayer(player_instance, type)
         for i,v in next, player.drawings.skeleton do v:Remove() end
         for i,v in next, player.drawings.text do v[3]:Remove() end
         for i,v in next, player.drawings.bar do v[3]:Remove(); v[4]:Remove() end
+        player.drawings.arrows:Remove()
     end
 
     for i = 1, 8 do
