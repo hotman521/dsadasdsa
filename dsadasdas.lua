@@ -1,8 +1,10 @@
 getgenv().crosshair = {
     enabled = false,
+    textenabled = false,
     refreshrate = 0,
     mode = 'mouse', -- center, mouse, custom
     position = Vector2.new(0,0), -- custom position
+    pulse = false,
 
     width = 1.5,
     length = 10,
@@ -39,8 +41,8 @@ local last_render = 0
 local drawings = {
     crosshair = {},
     text = {
-        Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = '', Color = Color3.new(1,1,1)}),
-        Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = ""}),
+        Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = 'Lucky', Color = Color3.new(1,1,1)}),
+        Drawing.new('Text', {Size = 13, Font = 2, Outline = true, Text = "Hub"}),
     }
 }
 
@@ -74,15 +76,18 @@ runservice.PostSimulation:Connect(function()
         local text_1 = drawings.text[1]
         local text_2 = drawings.text[2]
 
-        text_1.Visible = crosshair.enabled
-        text_2.Visible = crosshair.enabled
+        text_1.Visible = crosshair.enabled and crosshair.textenabled
+        text_2.Visible = crosshair.enabled and crosshair.textenabled
 
         if crosshair.enabled then
 
             local text_x = text_1.TextBounds.X + text_2.TextBounds.X
+            local Sine = crosshair.pulse and (1 - math.abs(math.sin(tick() * 2.5))) or 1
 
-            text_1.Position = position + Vector2.new(-text_x / 2, crosshair.radius + (crosshair.resize and crosshair.resize_max or crosshair.length) + 15)
-            text_2.Position = text_1.Position + Vector2.new(text_1.TextBounds.X)
+            text_1.Position = position + Vector2.new(-text_x / 2, crosshair.radius + (crosshair.resize and crosshair.resize_max or crosshair.length) + 10)
+            text_1.Transparency = Sine
+            text_2.Position = text_1.Position + Vector2.new(text_1.TextBounds.X + 1)
+            text_2.Transparency = Sine
             text_2.Color = crosshair.color
             
             for idx = 1, 4 do
@@ -107,11 +112,13 @@ runservice.PostSimulation:Connect(function()
                 inline.From = position + solve(angle, crosshair.radius)
                 inline.To = position + solve(angle, crosshair.radius + length)
                 inline.Thickness = crosshair.width
+                inline.Transparency = not crosshair.textenabled and Sine or 1
     
                 outline.Visible = true
                 outline.From = position + solve(angle, crosshair.radius - 1)
                 outline.To = position + solve(angle, crosshair.radius + length + 1)
                 outline.Thickness = crosshair.width + 1.5
+                outline.Transparency = not crosshair.textenabled and Sine or 1
             end
         else
             for idx = 1, 4 do
