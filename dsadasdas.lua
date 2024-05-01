@@ -76,8 +76,8 @@ runservice.PostSimulation:Connect(function()
         local text_1 = drawings.text[1]
         local text_2 = drawings.text[2]
 
-        text_1.Visible = crosshair.enabled and crosshair.textenabled
-        text_2.Visible = crosshair.enabled and crosshair.textenabled
+        text_1.Visible = crosshair.textenabled
+        text_2.Visible = crosshair.textenabled
 
         if crosshair.enabled then
 
