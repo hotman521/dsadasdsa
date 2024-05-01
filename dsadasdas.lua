@@ -107,14 +107,14 @@ runservice.PostSimulation:Connect(function()
                     length = crosshair.resize_min + math.sin(math.rad(resize_length)) * crosshair.resize_max
                 end
                     
-                inline.Visible = true
+                inline.Visible = crosshair.enabled
                 inline.Color = crosshair.color
                 inline.From = position + solve(angle, crosshair.radius)
                 inline.To = position + solve(angle, crosshair.radius + length)
                 inline.Thickness = crosshair.width
                 inline.Transparency = not crosshair.textenabled and Sine or 1
     
-                outline.Visible = true
+                outline.Visible = crosshair.enabled
                 outline.From = position + solve(angle, crosshair.radius - 1)
                 outline.To = position + solve(angle, crosshair.radius + length + 1)
                 outline.Thickness = crosshair.width + 1.5
