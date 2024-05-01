@@ -79,7 +79,7 @@ runservice.PostSimulation:Connect(function()
         text_1.Visible = crosshair.textenabled
         text_2.Visible = crosshair.textenabled
 
-        if crosshair.enabled then
+        if crosshair.enabled or crosshair.textenabled then
 
             local text_x = text_1.TextBounds.X + text_2.TextBounds.X
             local Sine = crosshair.pulse and (1 - math.abs(math.sin(tick() * 2.5))) or 1
