@@ -7,7 +7,7 @@ getgenv().esp = {
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
     CharacterSize = Vector3.new(4.5, 6.25, 2),
     CharacterOffset = CFrame.new(0, -0.25, 0),
-    UseBoundingBox = false, -- will use bounding box instead of size preset for dynamic box
+    UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
 
     HighlightTarget = true,
     HighlightFriends = true,
