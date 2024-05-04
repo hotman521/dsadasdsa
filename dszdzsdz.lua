@@ -5,9 +5,9 @@ getgenv().esp = {
     MaxDistanceAmount = 100,
 
     AutoStep = true, -- automatically updates the esp, you can disable this and use Player:Step() if you want to manually update them
-    CharacterSize = Vector3.new(4, 5.75, 1.5),
+    CharacterSize = Vector3.new(4.5, 6.25, 2),
     CharacterOffset = CFrame.new(0, -0.25, 0),
-    UseBoundingBox = false, -- will use bounding box instead of size preset for dynamic box
+    UseBoundingBox = true, -- will use bounding box instead of size preset for dynamic box
 
     HighlightTarget = true,
     HighlightFriends = true,
@@ -27,17 +27,17 @@ getgenv().esp = {
     BoxFillColor = Color3.fromRGB(0, 255, 0),
     BoxFillTransparency = 0.8,
     
-    SkeletonEnabled = true,
+    SkeletonEnabled = false,
     SkeletonColor = Color3.fromRGB(255, 255, 255),
     SkeletonMaxDistance = 300,
 
-    ChamsEnabled = true,
+    ChamsEnabled = false,
     ChamsInnerColor = Color3.fromRGB(0, 255, 0),
     ChamsOuterColor = Color3.fromRGB(255, 255, 255),
     ChamsInnerTransparency = 0.5,
     ChamsOuterTransparency = 0.2,
 
-    OutOfViewArrows = true,
+    OutOfViewArrows = false,
     OutOfViewArrowColor = Color3.fromRGB(0, 255, 0),
     OutOfViewArrowFilled = true,
     OutOfViewArrowTransparency = 0.7,
@@ -45,6 +45,7 @@ getgenv().esp = {
     WallCheck = false,
     AliveCheck = true,
     TeamCheck = false,
+    KnockedCheck = false,
     VisibleOnly = false,
     VisibleColor = Color3.fromRGB(0, 255, 0),
     NonVisibleColor = Color3.fromRGB(255, 0, 0),
@@ -284,7 +285,7 @@ function player:Check()
     local bodyeffects = character and character:FindFirstChild('BodyEffects')
     local armor = bodyeffects and bodyeffects:FindFirstChild('Armor')
 
-    if not character or not rootpart or not humanoid or (esp.TeamCheck and (self.instance.Team ~= nil and game.Players.LocalPlayer.Team ~= nil) and self.instance.Team == game.Players.LocalPlayer.Team) or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not self.localplayer and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) then
+    if not character or not rootpart or not humanoid or (esp.TeamCheck and (self.instance.Team ~= nil and game.Players.LocalPlayer.Team ~= nil) and self.instance.Team == game.Players.LocalPlayer.Team) or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not self.localplayer and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) or esp.KnockedCheck and bodyeffects and bodyeffects["K.O"].Value or character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil then
         return false
     end
 
