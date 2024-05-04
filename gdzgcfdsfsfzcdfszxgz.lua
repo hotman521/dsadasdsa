@@ -324,7 +324,7 @@ function player:Step(delta)
     local screen_position, screen_visible = cframe_to_viewport(check_data.cframe, true)
     local size
     local position
-    local color = (esp.HighlightFriends and (not CheckFriend(check_data.player) and esp.FriendsColor)) or (esp.HighlightTarget and (self.priority and esp.PriorityColor)) or not self.priority  and esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor)
+    local color = (esp.HighlightFriends and (self.friend or not CheckFriend(check_data.player) and esp.FriendsColor)) or (esp.HighlightTarget and (self.priority and esp.PriorityColor)) or not self.priority  and esp.WallCheck and (not RayCast(check_data.rootpart, GetOrigin(check_data.character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)}) and esp.NonVisibleColor or esp.VisibleColor)
     local localplayercolor = self.localplayer and esp.LocalPlayerColor
     local box_drawings = self.drawings.box
     local MaxDistance
@@ -812,6 +812,22 @@ function esp.UpdateTarget(player_instance)
                 end
             else
                 v.priority = false
+            end
+        end
+    end
+end
+
+function esp.UpdateFriend(player_instance)
+    for i, v in pairs(players) do
+        local check_pass, check_data = v:Check()
+
+        if check_pass then
+            if player_instance ~= nil then
+                if check_data.character == player_instance.Character then
+                    v.friend = true
+                end
+            else
+                v.friend = false
             end
         end
     end
