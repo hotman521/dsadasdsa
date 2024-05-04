@@ -285,7 +285,7 @@ function player:Check()
     local bodyeffects = character and character:FindFirstChild('BodyEffects')
     local armor = bodyeffects and bodyeffects:FindFirstChild('Armor')
 
-    if not character or not rootpart or not humanoid or (esp.TeamCheck and (self.instance.Team ~= nil and game.Players.LocalPlayer.Team ~= nil) and self.instance.Team == game.Players.LocalPlayer.Team) or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not self.localplayer and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) or esp.KnockedCheck and bodyeffects and bodyeffects["K.O"].Value or character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil then
+    if not character or not rootpart or not humanoid or (esp.TeamCheck and (self.instance.Team ~= nil and game.Players.LocalPlayer.Team ~= nil) and self.instance.Team == game.Players.LocalPlayer.Team) or (esp.AliveCheck and (not humanoid or 0 >= humanoid.Health)) or (esp.VisibleOnly and not self.localplayer and not RayCast(rootpart, GetOrigin(character), {GetCharacter(game.Players.LocalPlayer), GetIgnore(true)})) or esp.KnockedCheck and bodyeffects and bodyeffects["K.O"] and (bodyeffects["K.O"].Value or character:FindFirstChild("GRABBING_CONSTRAINT") ~= nil) then
         return false
     end
 
