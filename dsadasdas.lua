@@ -85,9 +85,11 @@ runservice.PostSimulation:Connect(function()
             local Sine = crosshair.pulse and (1 - math.abs(math.sin(tick() * 2.5))) or 1
 
             text_1.Position = position + Vector2.new(-text_x / 2, crosshair.radius + (crosshair.resize and crosshair.resize_max or crosshair.length) + 10)
-            text_1.Transparency = Sine
+            text_1.Transparency = Sine\
+            text_1.Size = 13
             text_2.Position = text_1.Position + Vector2.new(text_1.TextBounds.X + 1)
             text_2.Transparency = Sine
+            text_2.Size = 13
             text_2.Color = crosshair.color
             
             for idx = 1, 4 do
