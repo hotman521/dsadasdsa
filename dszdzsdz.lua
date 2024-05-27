@@ -554,6 +554,7 @@ function player:Step(delta)
                     drawing.Visible = true
                     drawing.Text = (layout.prefix or '') .. (data.text or '') .. (layout.suffix or '')
                     drawing.Color = data.color or layout.color or esp.TextColor
+                    drawing.Size = 14
         
                     if layout.bar then
                         drawing.Position = position + (
